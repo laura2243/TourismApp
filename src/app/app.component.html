@@ -10,9 +10,11 @@
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
   <link rel="preconnect" href="https://fonts.gstatic.com">
   <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet"
+    href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
 </head>
 
-<body class="mat-typography">
+<body>
 
   <div class="glass">
     <nav>
@@ -25,18 +27,38 @@
       </ul>
     </nav>
 
-    <div>
+    <div class="title">
       <h3>it's time to</h3>
       <h1>TRAVEL</h1>
     </div>
 
-  <!-- 
-      <mat-form-field appearance="outline">
+
+    <div class="searchFilter">
+      <span class="material-symbols-outlined">
+        search
+      </span>
+      <input type="search" placeholder="Discover your destination..." #input>
+    </div>
 
 
-        <mat-label>Search</mat-label>
-        <input placeholder="Search destinations" #input>
-      </mat-form-field> -->
+
+
+    <div class="titleSection">
+      <h3>discover our</h3>
+      <h1>OFFERS</h1>
+    </div>
+
+    <div class="card-container">
+      <div class="card" *ngFor="let destination of destinations">
+        <img [src]="destination.imageUrl" alt="Destination Image">
+        <h2 class="info">{{ destination.title }}</h2>
+        <p class="info">{{ destination.description }}</p>
+        <p class="info">Price: ${{ destination.price }}</p>
+        <p class="info">Available spots: {{ destination.availableSpots }}</p>
+        <button>Book Now</button>
+      </div>
+    </div>
+
   </div>
 
 
