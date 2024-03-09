@@ -1,12 +1,56 @@
-import { Component } from '@angular/core';
+import { ViewportScroller } from '@angular/common';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
+
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
 })
-export class AppComponent {
+export class AppComponent implements OnInit {
   title = 'TourismApp';
+  contactForm!: FormGroup;
+
+  @ViewChild('scrollTarget') scrollToOffersTarget!: ElementRef<HTMLElement>;
+  @ViewChild('scrollToAllDestinationsTarget') scrollToAllDestinationsTarget!: ElementRef<HTMLElement>;
+  @ViewChild('scrollToContactTarget') scrollToContactTarget!:  ElementRef<HTMLElement>;
+  @ViewChild('scrollToHomeTarget') scrollToHomeTarget!: ElementRef<HTMLElement>;
+
+
+  constructor(private viewportScroller: ViewportScroller) {
+  }
+
+
+
+  ngOnInit(): void {
+    this.initContactForm()
+  }
+
+
+  initContactForm() {
+    this.contactForm = new FormGroup({
+      username: new FormControl('', Validators.required),
+      password: new FormControl('', Validators.required),
+    });
+  }
+
+  scrollToHome() {
+    this.scrollToHomeTarget.nativeElement.scrollIntoView({ behavior: 'smooth', block: 'start'});
+  }
+  scrollToOffers() {
+    this.scrollToOffersTarget.nativeElement.scrollIntoView({ behavior: 'smooth', block: 'start'});
+  }
+  scrollToAllDestinations() {
+    this.scrollToAllDestinationsTarget.nativeElement.scrollIntoView({ behavior: 'smooth', block: 'start'});
+  }
+  scrollToContact() {
+    this.scrollToContactTarget.nativeElement.scrollIntoView({ behavior: 'smooth', block: 'start'});
+  }
+
+
+
+
 
   destinations = [
     {
@@ -44,7 +88,7 @@ export class AppComponent {
       price: 150,
       availableSpots: 10
     },
-   
+
   ];
 
 
@@ -84,6 +128,7 @@ export class AppComponent {
       price: 150,
       availableSpots: 10
     },
-   
+
   ];
+  loginForm: any;
 }

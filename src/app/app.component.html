@@ -20,13 +20,14 @@
     <nav>
       <h2 class="logo">T||A</h2>
       <ul>
-        <li><a href="#">HOME</a></li>
-        <li><a href="#">ABOUT</a></li>
-        <li><a href="#">BOOKINGS</a></li>
-        <li><a href="#">CONTACT</a></li>
+        <li><a (click)="scrollToHome()">HOME</a></li>
+        <li><a (click)="scrollToAllDestinations()">BOOKINGS</a></li>
+        <li><a (click)="scrollToContact()">CONTACT</a></li>
+        <li><a>SIGN IN</a></li>
       </ul>
     </nav>
 
+    <div class="scrollToHome" #scrollToHomeTarget></div>
     <div class="title">
       <h3>it's time to</h3>
       <h1>TRAVEL</h1>
@@ -41,14 +42,16 @@
     </div>
 
 
+    <div class="scrollToOffers" #scrollToOffersTarget></div>
+    <section id="sectionOffers">
+      <div class="scrollToOffers"></div>
+      <div class="sectionOffers">
 
-    <div class="sectionOffers">
-
-      <div class="titleSectionOffers">
-        <h3>discover our</h3>
-        <h1>OFFERS</h1>
-      </div>
-<!-- 
+        <div class="titleSectionOffers">
+          <h3>discover our</h3>
+          <h1>OFFERS</h1>
+        </div>
+        <!-- 
 
 
       <mat-form-field class="datePicker" appearance="outline">
@@ -62,54 +65,96 @@
         <mat-date-range-picker #picker></mat-date-range-picker>
       </mat-form-field> -->
 
-      <div class="card-container-wrapper">
-        <div class="card-container">
-          <div class="card" *ngFor="let offerDestination of offerDestinations">
-            <img [src]="offerDestination.imageUrl" alt="Destination Image">
-            <h2 class="info">{{ offerDestination.title }}</h2>
-            <p class="info">{{ offerDestination.description }}</p>
-            <p class="info">Price: ${{ offerDestination.price }}</p>
-            <p class="info">Available spots: {{ offerDestination.availableSpots }}</p>
-            <button>Book Now</button>
+        <div class="card-container-wrapper">
+          <div class="card-container">
+            <div class="card" *ngFor="let offerDestination of offerDestinations">
+              <img [src]="offerDestination.imageUrl" alt="Destination Image">
+              <h2 class="info">{{ offerDestination.title }}</h2>
+              <p class="info">{{ offerDestination.description }}</p>
+              <p class="info">Price: ${{ offerDestination.price }}</p>
+              <p class="info">Available spots: {{ offerDestination.availableSpots }}</p>
+              <button>Book Now</button>
+            </div>
           </div>
         </div>
       </div>
-    </div>
+    </section>
 
-    <div class="sectionAll">
-      <div class="titleSectionAll">
-        <h3>unveil all your</h3>
-        <h1>POSSIBILITIES</h1>
+
+    <div class="scrollToAllDestinatins" #scrollToAllDestinationsTarget></div>
+    <section id="sectionAll">
+      <div class="sectionAll">
+        <div class="titleSectionAll">
+          <h3>unveil all your</h3>
+          <h1>POSSIBILITIES</h1>
+        </div>
+
+        <mat-form-field class="datePicker" appearance="outline">
+          <mat-label>Enter a date range</mat-label>
+          <mat-date-range-input [rangePicker]="picker">
+            <input matStartDate placeholder="MM/DD/YYYY - ">
+            <input matEndDate placeholder="MM/DD/YYYY">
+          </mat-date-range-input>
+          <!-- <mat-hint>MM/DD/YYYY - MM/DD/YYYY</mat-hint> -->
+          <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+          <mat-date-range-picker #picker></mat-date-range-picker>
+        </mat-form-field>
+
+
+
+
+        <div class="card-container-wrapper">
+          <div class="card-container">
+            <div class="card" *ngFor="let destination of destinations">
+              <img [src]="destination.imageUrl" alt="Destination Image">
+              <h2 class="info">{{ destination.title }}</h2>
+              <p class="info">{{ destination.description }}</p>
+              <p class="info">Price: ${{ destination.price }}</p>
+              <p class="info">Available spots: {{ destination.availableSpots }}</p>
+              <button>Book Now</button>
+            </div>
+          </div>
+        </div>
+
       </div>
 
-      <mat-form-field class="datePicker" appearance="outline">
-        <mat-label>Enter a date range</mat-label>
-        <mat-date-range-input [rangePicker]="picker">
-          <input matStartDate placeholder="MM/DD/YYYY - ">
-          <input matEndDate placeholder="MM/DD/YYYY">
-        </mat-date-range-input>
-        <!-- <mat-hint>MM/DD/YYYY - MM/DD/YYYY</mat-hint> -->
-        <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
-        <mat-date-range-picker #picker></mat-date-range-picker>
-      </mat-form-field>
+    </section>
 
 
 
-
-      <div class="card-container-wrapper">
-        <div class="card-container">
-          <div class="card" *ngFor="let destination of destinations">
-            <img [src]="destination.imageUrl" alt="Destination Image">
-            <h2 class="info">{{ destination.title }}</h2>
-            <p class="info">{{ destination.description }}</p>
-            <p class="info">Price: ${{ destination.price }}</p>
-            <p class="info">Available spots: {{ destination.availableSpots }}</p>
-            <button>Book Now</button>
-          </div>
+    <div class="scrollToContact" #scrollToContactTarget></div>
+    <section id="sectionContact">
+      <div class="sectionContact">
+        <div class="titleSectionContact">
+          <h3>lost in wonder?</h3>
+          <h1>Let us guide you.</h1>
         </div>
       </div>
 
-    </div>
+
+
+      <div class="formWrapper">
+        <div class="form">
+
+          <form [formGroup]="contactForm" class="ng-pristine ng-invalid ng-touched">
+
+            <mat-form-field class="input">
+              <mat-label>Your email*</mat-label>
+              <input type="text" matInput formControlName="email">
+            </mat-form-field>
+
+            <mat-form-field class="inputContent">
+              <mat-label>What can we help you with?*</mat-label>
+              <input matInput formControlName="content">
+            </mat-form-field>
+
+            <button>Send</button>
+          </form>
+        </div>
+      </div>
+    </section>
+
+
   </div>
 
 
