@@ -44,6 +44,7 @@ nav {
   position: fixed;
   z-index: 10;
   width: 80vw;
+  cursor: pointer;
 
 
 
@@ -256,6 +257,48 @@ h1 {
 
 
 
+
+/**************************************************No Destination Found*********************************************************/
+
+
+.noDestinationsFound {
+  margin-top: 1%;
+}
+
+.noDestinationsFound h3 {
+  color: #fff;
+  font-style: italic;
+  font-weight: 100;
+  font-size: 20px;
+  letter-spacing: 1px;
+  margin: 0 37% -1%;
+  margin-top: 5%;
+
+}
+
+.noDestinationsFound h1 {
+  color: #fff;
+  margin: 0 37% 0;
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
+  font-size: 90px;
+  letter-spacing: 20px;
+  opacity: 0.6;
+  background-image: linear-gradient(40deg, #000, #fff, #fff, #fff, #000);
+  background-size: 100%;
+  margin-bottom: 5%;
+
+  /* -webkit-background-clip: text;
+    -moz-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    -moz-text-fill-color: transparent; */
+
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent !important;
+
+}
+
+
 /************************************************** Search bar *********************************************************/
 .searchFilter {
   padding-top: 5vh;
@@ -301,8 +344,8 @@ input {
 }
 
 input[type=search] {
-  -webkit-appearance: textfield;
-  -webkit-box-sizing: content-box;
+  /* -webkit-appearance: textfield;
+  -webkit-box-sizing: content-box; */
   font-family: Verdana, Geneva, Tahoma, sans-serif;
   font-size: 25px;
   color: white !important;
@@ -601,6 +644,10 @@ input::-webkit-search-cancel-button {
   border-radius: 10px !important;
   box-shadow: 0 1px 8px rgba(255, 255, 255, 0.8);
   font-family: Verdana, Geneva, Tahoma, sans-serif !important;
+}
+
+::ng-deep .form form .mat-mdc-input-element{
+  color: whitesmoke !important;
 }
 
 .scrollToOffers {

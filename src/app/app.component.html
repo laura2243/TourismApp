@@ -38,7 +38,8 @@
       <span class="material-symbols-outlined">
         search
       </span>
-      <input type="search" placeholder="Discover your destination..." #input>
+      <input type="search" placeholder="Discover your destination..." [(ngModel)]="searchQuery"
+        (keyup.enter)="filterDestinations()" #input>
     </div>
 
 
@@ -71,10 +72,14 @@
               <img [src]="offerDestination.imageUrl" alt="Destination Image">
               <h2 class="info">{{ offerDestination.title }}</h2>
               <p class="info">{{ offerDestination.description }}</p>
+              <p class="info">{{ offerDestination.location }}</p>
               <p class="info">Price: ${{ offerDestination.price }}</p>
               <p class="info">Available spots: {{ offerDestination.availableSpots }}</p>
               <button>Book Now</button>
             </div>
+
+
+
           </div>
         </div>
       </div>
@@ -105,15 +110,24 @@
 
         <div class="card-container-wrapper">
           <div class="card-container">
-            <div class="card" *ngFor="let destination of destinations">
+
+            <div class="card" *ngFor="let destination of (searchedDestination ? filteredDestinations : destinations)">
               <img [src]="destination.imageUrl" alt="Destination Image">
               <h2 class="info">{{ destination.title }}</h2>
               <p class="info">{{ destination.description }}</p>
+              <p class="info">{{ destination.location }}</p>
               <p class="info">Price: ${{ destination.price }}</p>
               <p class="info">Available spots: {{ destination.availableSpots }}</p>
               <button>Book Now</button>
             </div>
           </div>
+         
+          </div>
+          <div class="noDestinationsFound" *ngIf="showTextNoDestinationFound">
+            <h3> No destinations Available for </h3>
+            <h1>{{ searchQuery }}</h1>
+
+
         </div>
 
       </div>

@@ -1,6 +1,7 @@
 import { ViewportScroller } from '@angular/common';
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { filter } from 'rxjs';
 
 
 @Component({
@@ -14,7 +15,7 @@ export class AppComponent implements OnInit {
 
   @ViewChild('scrollTarget') scrollToOffersTarget!: ElementRef<HTMLElement>;
   @ViewChild('scrollToAllDestinationsTarget') scrollToAllDestinationsTarget!: ElementRef<HTMLElement>;
-  @ViewChild('scrollToContactTarget') scrollToContactTarget!:  ElementRef<HTMLElement>;
+  @ViewChild('scrollToContactTarget') scrollToContactTarget!: ElementRef<HTMLElement>;
   @ViewChild('scrollToHomeTarget') scrollToHomeTarget!: ElementRef<HTMLElement>;
 
 
@@ -36,20 +37,46 @@ export class AppComponent implements OnInit {
   }
 
   scrollToHome() {
-    this.scrollToHomeTarget.nativeElement.scrollIntoView({ behavior: 'smooth', block: 'start'});
+    this.scrollToHomeTarget.nativeElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
   }
   scrollToOffers() {
-    this.scrollToOffersTarget.nativeElement.scrollIntoView({ behavior: 'smooth', block: 'start'});
+    this.scrollToOffersTarget.nativeElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
   }
   scrollToAllDestinations() {
-    this.scrollToAllDestinationsTarget.nativeElement.scrollIntoView({ behavior: 'smooth', block: 'start'});
+    this.searchedDestination = false;
+    this.scrollToAllDestinationsTarget.nativeElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+  scrollToAllDestinationsFromSearch() {
+    this.scrollToAllDestinationsTarget.nativeElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
   }
   scrollToContact() {
-    this.scrollToContactTarget.nativeElement.scrollIntoView({ behavior: 'smooth', block: 'start'});
+    this.scrollToContactTarget.nativeElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
   }
 
 
 
+  filteredDestinations: any[] = [];
+  searchQuery: string = '';
+  searchedDestination: boolean = false;
+  showTextNoDestinationFound: boolean = false;
+
+  filterDestinations() {
+    if (!this.searchQuery) {
+      this.filteredDestinations = this.destinations;
+    } else {
+      this.filteredDestinations = this.destinations.filter(destination => {
+        return destination.location.toLowerCase() === this.searchQuery.toLowerCase();
+      });
+    }
+
+    if(this.filteredDestinations.length == 0){
+      this.showTextNoDestinationFound = true;
+    }else{
+      this.showTextNoDestinationFound = false;
+    }
+    this.searchedDestination = true;
+    this.scrollToAllDestinationsFromSearch()
+  }
 
 
   destinations = [
@@ -57,6 +84,7 @@ export class AppComponent implements OnInit {
       imageUrl: '../assets/cardPhoto0.jpg',
       title: 'Destination 1',
       description: 'Description for destination 1.',
+      location: 'Here',
       price: 100,
       availableSpots: 5
     },
@@ -64,6 +92,7 @@ export class AppComponent implements OnInit {
       imageUrl: '../assets/cardPhoto1.jpg',
       title: 'Destination 2',
       description: 'Description for destination 2.',
+      location: 'Location for destination 1.',
       price: 150,
       availableSpots: 10
     },
@@ -71,6 +100,7 @@ export class AppComponent implements OnInit {
       imageUrl: '../assets/cardPhoto.jpg',
       title: 'Destination 2',
       description: 'Description for destination 2.',
+      location: 'Location for destination 1.',
       price: 150,
       availableSpots: 10
     },
@@ -78,6 +108,7 @@ export class AppComponent implements OnInit {
       imageUrl: '../assets/cardPhoto.jpg',
       title: 'Destination 2',
       description: 'Description for destination 2.',
+      location: 'Location for destination 1.',
       price: 150,
       availableSpots: 10
     },
@@ -85,6 +116,7 @@ export class AppComponent implements OnInit {
       imageUrl: '../assets/cardPhoto.jpg',
       title: 'Destination 2',
       description: 'Description for destination 2.',
+      location: 'Location for destination 1.',
       price: 150,
       availableSpots: 10
     },
@@ -97,6 +129,7 @@ export class AppComponent implements OnInit {
       imageUrl: '../assets/cardPhoto.jpg',
       title: 'Destination 1',
       description: 'Description for destination 1.',
+      location: 'Location for destination 1.',
       price: 100,
       availableSpots: 5
     },
@@ -104,6 +137,7 @@ export class AppComponent implements OnInit {
       imageUrl: '../assets/cardPhoto.jpg',
       title: 'Destination 2',
       description: 'Description for destination 2.',
+      location: 'Location for destination 1.',
       price: 150,
       availableSpots: 10
     },
@@ -111,6 +145,7 @@ export class AppComponent implements OnInit {
       imageUrl: '../assets/cardPhoto.jpg',
       title: 'Destination 2',
       description: 'Description for destination 2.',
+      location: 'Location for destination 1.',
       price: 150,
       availableSpots: 10
     },
@@ -118,6 +153,7 @@ export class AppComponent implements OnInit {
       imageUrl: '../assets/cardPhoto.jpg',
       title: 'Destination 2',
       description: 'Description for destination 2.',
+      location: 'Location for destination 1.',
       price: 150,
       availableSpots: 10
     },
@@ -125,6 +161,7 @@ export class AppComponent implements OnInit {
       imageUrl: '../assets/cardPhoto.jpg',
       title: 'Destination 2',
       description: 'Description for destination 2.',
+      location: 'Location for destination 1.',
       price: 150,
       availableSpots: 10
     },
