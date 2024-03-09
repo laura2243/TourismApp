@@ -124,30 +124,78 @@ h1 {
 
 }
 
-/**************************************************Section Title *********************************************************/
+/**************************************************Section Title Offers *********************************************************/
 
-
-.titleSection {
-  margin-top: 30%;
+.sectionOffers {
+  display: flex;
+  flex-direction: column;
 }
 
-.titleSection h3 {
+.titleSectionOffers {
+  margin-top: 27%;
+}
+
+.titleSectionOffers h3 {
   color: #fff;
   font-style: italic;
   font-weight: 100;
   font-size: 20px;
   letter-spacing: 1px;
+  margin: 0 31% -1%;
 
 }
 
-.titleSection h1 {
+.titleSectionOffers h1 {
   color: #fff;
-  margin: 0 30%;
+  margin: 0 30% 0;
   font-family: Verdana, Geneva, Tahoma, sans-serif;
   font-size: 120px;
   letter-spacing: 20px;
   opacity: 0.6;
   background-image: linear-gradient(40deg, #000, #fff, #fff, #fff, #000);
+  background-size: 100%;
+
+  /* -webkit-background-clip: text;
+    -moz-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    -moz-text-fill-color: transparent; */
+
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent !important;
+
+}
+
+
+/**************************************************Section Title All*********************************************************/
+
+.sectionAll {
+  display: flex;
+  flex-direction: column;
+}
+
+.titleSectionAll {
+  margin-top: 27%;
+}
+
+.titleSectionAll h3 {
+  color: #fff;
+  font-style: italic;
+  font-weight: 100;
+  font-size: 27px;
+  letter-spacing: 1px;
+  margin: 0 15.5% -1%;
+
+}
+
+.titleSectionAll h1 {
+  color: #fff;
+  margin: 0 15% 0;
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
+  font-size: 96px;
+  letter-spacing: 20px;
+  opacity: 0.6;
+  background-image: linear-gradient(40deg, #564e4e, #fff, #fff, #fff, #312d2d);
   background-size: 100%;
 
   /* -webkit-background-clip: text;
@@ -239,14 +287,23 @@ input::-webkit-search-cancel-button {
 
 /************************************************** Destination cards *********************************************************/
 .card-container {
-  padding-top: 15%;
+  padding-top: 3%;
   display: flex;
   flex-wrap: wrap;
-  justify-content: center;
+  justify-content: flex-start;
   gap: 10%;
-  max-width: 8100%;
-  /* Set your desired max width */
   margin: auto;
+  width: 90%;
+}
+
+.card-container-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  width: 90%;
+  margin-left: 8%;
+
 }
 
 .card {
@@ -259,11 +316,12 @@ input::-webkit-search-cancel-button {
   transition: transform 0.3s;
   cursor: pointer;
   width: 300px;
-  height: 400px;
+  height: 390px;
   margin-bottom: 8%;
   font-family: Verdana, Geneva, Tahoma, sans-serif !important;
   position: relative;
-  
+
+
 
 }
 
@@ -308,5 +366,92 @@ input::-webkit-search-cancel-button {
 }
 
 .card h2 {
-padding-bottom: 2vh;
+  padding-bottom: 2vh;
+}
+
+
+/************************************************** Date Picker *********************************************************/
+.datePicker {
+
+  width: 19.5%;
+  margin-left: 12.5%;
+  transform: translateY(40%);
+
+}
+
+
+/* Calender icon */
+::ng-deep .mat-datepicker-toggle {
+  color: whitesmoke !important;
+}
+
+/* Date Format */
+::ng-deep .mat-mdc-form-field-hint {
+  color: rgba(255, 255, 255, 0.5) !important;
+  margin-top: 3px;
+}
+
+::ng-deep .ng-tns-c2608167813-0 {
+  margin-bottom: -3px;
+  color: rgba(255, 255, 255, 0.7) !important;
+}
+
+
+
+::ng-deep .mdc-notched-outline>* {
+
+  border-left: transparent !important;
+  border-right: transparent !important;
+  border-top: transparent !important;
+  border-color: whitesmoke !important;
+  border-width: 0.15em !important;
+
+}
+
+::ng-deep .mdc-text-field--focused .mdc-notched-outline>* {
+  border-left: transparent !important;
+  border-right: transparent !important;
+  border-top: transparent !important;
+  border-color: whitesmoke !important;
+}
+
+::ng-deep .mdc-text-field--invalid .mdc-notched-outline>* {
+  border-left: transparent !important;
+  border-right: transparent !important;
+  border-top: transparent !important;
+
+}
+
+/* Placeholder NOT focus */
+::ng-deep .mdc-text-field:not(.mdc-text-field--disabled) .mdc-floating-label {
+  color: whitesmoke !important;
+}
+
+/* Placeholder on focus */
+::ng-deep .mdc-text-field--focused:not(.mdc-text-field--disabled) .mdc-floating-label {
+  color: whitesmoke !important;
+}
+
+::ng-deep .mat-calendar-body-active>.mat-calendar-body-today {
+  color: white !important;
+  background-color: rgb(28, 95, 55) !important;
+}
+
+::ng-deep .mat-calendar-body-selected {
+  color: white !important;
+  background-color: rgb(28, 95, 55) !important;
+}
+
+::ng-deep .mat-calendar-body-cell:not(.mat-calendar-body-disabled):hover>.mat-calendar-body-cell-content:not(.mat-calendar-body-selected):not(.mat-calendar-body-comparison-identical) {
+  background-color: rgba(57, 190, 185, 0.2) !important;
+}
+
+::ng-deep .mat-calendar-body-today:not(.mat-calendar-body-selected) {
+  border-color: rgb(28, 95, 55) !important;
+
+}
+
+::ng-deep .mat-calendar {
+  background-color: whitesmoke!important;
+  
 }

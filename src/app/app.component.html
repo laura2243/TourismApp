@@ -42,23 +42,74 @@
 
 
 
+    <div class="sectionOffers">
 
-    <div class="titleSection">
-      <h3>discover our</h3>
-      <h1>OFFERS</h1>
-    </div>
+      <div class="titleSectionOffers">
+        <h3>discover our</h3>
+        <h1>OFFERS</h1>
+      </div>
+<!-- 
 
-    <div class="card-container">
-      <div class="card" *ngFor="let destination of destinations">
-        <img [src]="destination.imageUrl" alt="Destination Image">
-        <h2 class="info">{{ destination.title }}</h2>
-        <p class="info">{{ destination.description }}</p>
-        <p class="info">Price: ${{ destination.price }}</p>
-        <p class="info">Available spots: {{ destination.availableSpots }}</p>
-        <button>Book Now</button>
+
+      <mat-form-field class="datePicker" appearance="outline">
+        <mat-label>Enter a date range</mat-label>
+        <mat-date-range-input [rangePicker]="picker">
+          <input matStartDate placeholder="MM/DD/YYYY - ">
+          <input matEndDate placeholder="MM/DD/YYYY">
+        </mat-date-range-input>
+
+        <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+        <mat-date-range-picker #picker></mat-date-range-picker>
+      </mat-form-field> -->
+
+      <div class="card-container-wrapper">
+        <div class="card-container">
+          <div class="card" *ngFor="let offerDestination of offerDestinations">
+            <img [src]="offerDestination.imageUrl" alt="Destination Image">
+            <h2 class="info">{{ offerDestination.title }}</h2>
+            <p class="info">{{ offerDestination.description }}</p>
+            <p class="info">Price: ${{ offerDestination.price }}</p>
+            <p class="info">Available spots: {{ offerDestination.availableSpots }}</p>
+            <button>Book Now</button>
+          </div>
+        </div>
       </div>
     </div>
 
+    <div class="sectionAll">
+      <div class="titleSectionAll">
+        <h3>unveil all your</h3>
+        <h1>POSSIBILITIES</h1>
+      </div>
+
+      <mat-form-field class="datePicker" appearance="outline">
+        <mat-label>Enter a date range</mat-label>
+        <mat-date-range-input [rangePicker]="picker">
+          <input matStartDate placeholder="MM/DD/YYYY - ">
+          <input matEndDate placeholder="MM/DD/YYYY">
+        </mat-date-range-input>
+        <!-- <mat-hint>MM/DD/YYYY - MM/DD/YYYY</mat-hint> -->
+        <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+        <mat-date-range-picker #picker></mat-date-range-picker>
+      </mat-form-field>
+
+
+
+
+      <div class="card-container-wrapper">
+        <div class="card-container">
+          <div class="card" *ngFor="let destination of destinations">
+            <img [src]="destination.imageUrl" alt="Destination Image">
+            <h2 class="info">{{ destination.title }}</h2>
+            <p class="info">{{ destination.description }}</p>
+            <p class="info">Price: ${{ destination.price }}</p>
+            <p class="info">Available spots: {{ destination.availableSpots }}</p>
+            <button>Book Now</button>
+          </div>
+        </div>
+      </div>
+
+    </div>
   </div>
 
 
