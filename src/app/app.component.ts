@@ -13,10 +13,11 @@ export class AppComponent implements OnInit {
   title = 'TourismApp';
   contactForm!: FormGroup;
 
-  @ViewChild('scrollTarget') scrollToOffersTarget!: ElementRef<HTMLElement>;
+  @ViewChild('scrollTargetOffersTarget') scrollToOffersTarget!: ElementRef<HTMLElement>;
   @ViewChild('scrollToAllDestinationsTarget') scrollToAllDestinationsTarget!: ElementRef<HTMLElement>;
   @ViewChild('scrollToContactTarget') scrollToContactTarget!: ElementRef<HTMLElement>;
   @ViewChild('scrollToHomeTarget') scrollToHomeTarget!: ElementRef<HTMLElement>;
+  @ViewChild('scrollToAboutUsTarget') scrollToAboutUsTarget!: ElementRef<HTMLElement>;
 
 
   constructor(private viewportScroller: ViewportScroller) {
@@ -38,6 +39,9 @@ export class AppComponent implements OnInit {
 
   scrollToHome() {
     this.scrollToHomeTarget.nativeElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+  scrollToAboutUs() {
+    this.scrollToAboutUsTarget.nativeElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
   }
   scrollToOffers() {
     this.scrollToOffersTarget.nativeElement.scrollIntoView({ behavior: 'smooth', block: 'start' });

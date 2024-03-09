@@ -21,6 +21,7 @@
       <h2 class="logo">T||A</h2>
       <ul>
         <li><a (click)="scrollToHome()">HOME</a></li>
+        <li><a (click)="scrollToAboutUs()">ABOUT</a></li>
         <li><a (click)="scrollToAllDestinations()">BOOKINGS</a></li>
         <li><a (click)="scrollToContact()">CONTACT</a></li>
         <li><a>SIGN IN</a></li>
@@ -41,6 +42,29 @@
       <input type="search" placeholder="Discover your destination..." [(ngModel)]="searchQuery"
         (keyup.enter)="filterDestinations()" #input>
     </div>
+
+
+
+
+
+    <div class="scrollToAboutUs" #scrollToAboutUsTarget> </div>
+      <div class="scrollToAboutUs"></div>
+      <div class="titleSectionAboutUs">
+
+        <h1>Who are we?</h1>
+        <h3>With a touch of mystique and a dash of curiosity, we are specialized in crafting unforgettable journeys into
+          the unknown. Step into our realm and discover hidden gems, mystical landscapes, and untold tales waiting to be
+          explored.
+        </h3>
+        <h3>
+          Let us be your guide to adventure, as we unveil the mysteries of the world, one destination at a
+          time...
+        </h3>
+      </div>
+   
+
+
+
 
 
     <div class="scrollToOffers" #scrollToOffersTarget></div>
@@ -121,11 +145,11 @@
               <button>Book Now</button>
             </div>
           </div>
-         
-          </div>
-          <div class="noDestinationsFound" *ngIf="showTextNoDestinationFound">
-            <h3> No destinations Available for </h3>
-            <h1>{{ searchQuery }}</h1>
+
+        </div>
+        <div class="noDestinationsFound" *ngIf="showTextNoDestinationFound">
+          <h3> No destinations Available for </h3>
+          <h1>{{ searchQuery }}</h1>
 
 
         </div>
