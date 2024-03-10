@@ -499,7 +499,7 @@ input::-webkit-search-cancel-button {
   transition: transform 0.3s;
   cursor: pointer;
   width: 300px;
-  height: 390px;
+  height: 410px;
   margin-bottom: 8%;
   font-family: Verdana, Geneva, Tahoma, sans-serif !important;
   position: relative;
@@ -536,7 +536,9 @@ input::-webkit-search-cancel-button {
   position: absolute;
   bottom: 20px;
   left: 50%;
+  
   transform: translateX(-50%);
+
 }
 
 .card button:hover {
@@ -842,4 +844,43 @@ input::-webkit-search-cancel-button {
 /* Show submenu when hovering over parent menu item */
 ul li:hover>.submenu {
   display: block;
+}
+
+
+
+
+
+.sale {
+  top: 0 !important;
+	position: absolute;
+	display: inline-block;
+	background: rgb(36, 125, 72);
+	color: white;
+	height: 2.5rem;
+	width: 2.5rem;
+	text-align: center;
+	vertical-align: middle;
+	line-height: 2.5rem;
+	transform: rotate(-20deg);
+	animation: beat 1s ease infinite alternate;
+	&:before,
+	&:after {
+		content:"";
+		position: absolute;
+		background: inherit;
+		height: inherit;
+		width: inherit;
+		top: 0;
+		left: 0;
+		z-index: -1;
+		transform: rotate(30deg);
+	}
+	&:after {
+		transform: rotate(60deg);
+	}
+}
+
+@keyframes beat {
+	from {	transform: rotate(-20deg) scale(1); }
+	to {	transform: rotate(-20deg) scale(1.1); }
 }

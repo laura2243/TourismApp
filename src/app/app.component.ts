@@ -133,6 +133,7 @@ export class AppComponent implements OnInit {
       imageUrl: '../assets/cardPhoto.jpg',
       title: 'Destination 1',
       description: 'Description for destination 1.',
+      date: '12.03.2024 - 20.03.2024',
       location: 'Location for destination 1.',
       price: 100,
       availableSpots: 5
@@ -141,6 +142,7 @@ export class AppComponent implements OnInit {
       imageUrl: '../assets/cardPhoto.jpg',
       title: 'Destination 2',
       description: 'Description for destination 2.',
+      date: '12.03.2024 - 20.03.2024',
       location: 'Location for destination 1.',
       price: 150,
       availableSpots: 10
@@ -149,6 +151,7 @@ export class AppComponent implements OnInit {
       imageUrl: '../assets/cardPhoto.jpg',
       title: 'Destination 2',
       description: 'Description for destination 2.',
+      date: '12.03.2024 - 20.03.2024',
       location: 'Location for destination 1.',
       price: 150,
       availableSpots: 10
@@ -157,6 +160,7 @@ export class AppComponent implements OnInit {
       imageUrl: '../assets/cardPhoto.jpg',
       title: 'Destination 2',
       description: 'Description for destination 2.',
+      date: '12.03.2024 - 20.03.2024',
       location: 'Location for destination 1.',
       price: 150,
       availableSpots: 10
@@ -165,6 +169,7 @@ export class AppComponent implements OnInit {
       imageUrl: '../assets/cardPhoto.jpg',
       title: 'Destination 2',
       description: 'Description for destination 2.',
+      date: '12.03.2024 - 20.03.2024',
       location: 'Location for destination 1.',
       price: 150,
       availableSpots: 10
