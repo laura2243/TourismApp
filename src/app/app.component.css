@@ -30,24 +30,20 @@ body {
   overflow: auto;
   background-size: 80vw 90vh;
 
-
-
 }
 
 nav {
   display: flex;
-  padding: 3% 5%;
-  /* background-image: inherit, linear-gradient(to top, #ADB2B6 0%, #ADB2B6 100%) ; */
-  background-image: inherit (180deg, blue 0%, rgba(255, 255, 255, 0) 10%);
+  padding: 2% 5%;
+  background-image: inherit ;
+  /* background-image: inherit (180deg, blue 0%, rgba(255, 255, 255, 0) 10%); */
   background-size: 80vw 90vh;
   background-repeat: space;
   position: fixed;
   z-index: 10;
   width: 80vw;
   cursor: pointer;
-
-
-
+  height: 5px;
 
 }
 
@@ -56,9 +52,12 @@ nav {
 }
 
 .logo {
-  font-size: 42px;
+  font-size: 40px;
   color: #fff;
-  cursor: pointer;
+  top: -10px;
+  position: relative;
+ 
+
 }
 
 nav ul {
@@ -292,11 +291,12 @@ h1 {
   color: #fff;
   margin: 0 15% 0;
   font-family: Verdana, Geneva, Tahoma, sans-serif;
-  font-size: 96px;
-  letter-spacing: 20px;
+  font-size: 90px;
+  letter-spacing: 17px;
   opacity: 0.6;
   background-image: linear-gradient(40deg, #564e4e, #fff, #fff, #fff, #312d2d);
   background-size: 100%;
+  /* width: 100%; */
 
   /* -webkit-background-clip: text;
     -moz-background-clip: text;
@@ -714,6 +714,70 @@ input::-webkit-search-cancel-button {
   transform: translateY(300px) !important;
 }
 
-.scrollToAboutUs{
+.scrollToAboutUs {
   transform: translateY(150px) !important;
+}
+.scrollToContact {
+  transform: translateY(150px) !important;
+}
+
+
+/*********************************************** Contact Info Section ***************************************************/
+.horizontal-line {
+  border-top: 1px solid white;
+  margin-top: 20px;
+  margin-bottom: 20px;
+  margin: 0 5%;
+}
+
+.contact-section {
+  padding: 20px 0;
+  display: flex;
+  width: 100%;
+  justify-content: space-around;
+  align-items: center;
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
+  font-weight: 100;
+  
+}
+
+.contact-section p {
+  margin-bottom: 10px;
+  color: white;
+}
+
+
+.vertical-line {
+  border-left: 1px solid white;
+  height: 100%;
+}
+
+
+.social-media-icons {
+  display: flex;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.social-media-icons p{
+  margin-right: 0.5vw;
+}
+
+.social-media-icons li {
+  display: inline-block;
+  margin-right: 10px;
+}
+
+.social-media-icons li:last-child {
+  margin-right: 0;
+}
+
+.social-media-icons a {
+  color: white;
+  font-size: 18px;
+}
+
+.social-media-icons a:hover {
+  color: rgb(36, 125, 72)
 }
