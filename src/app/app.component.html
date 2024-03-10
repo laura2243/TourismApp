@@ -25,7 +25,13 @@
       <ul>
         <li><a (click)="scrollToHome()">HOME</a></li>
         <li><a (click)="scrollToAboutUs()">ABOUT</a></li>
-        <li><a (click)="scrollToAllDestinations()">BOOKINGS</a></li>
+        <li><a (click)="scrollToAllDestinations()">BOOKINGS</a>
+          <ul>
+            <li>
+              <a (click)="scrollToOffers()">OFFERS</a>
+            </li>
+          </ul>
+        </li>
         <li><a (click)="scrollToContact()">CONTACT</a></li>
         <li><a>SIGN IN</a></li>
       </ul>
@@ -206,7 +212,7 @@
       <p><i class="fas fa-phone"></i> Phone: +40727744314</p>
 
 
-      
+
       <ul class="social-media-icons">
         <p>Follow Us:</p>
         <li><a href="#"><i class="fab fa-facebook-f"></i></a></li>

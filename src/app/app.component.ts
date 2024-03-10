@@ -13,7 +13,7 @@ export class AppComponent implements OnInit {
   title = 'TourismApp';
   contactForm!: FormGroup;
 
-  @ViewChild('scrollTargetOffersTarget') scrollToOffersTarget!: ElementRef<HTMLElement>;
+  @ViewChild('scrollToOffersTarget') scrollToOffersTarget!: ElementRef<HTMLElement>;
   @ViewChild('scrollToAllDestinationsTarget') scrollToAllDestinationsTarget!: ElementRef<HTMLElement>;
   @ViewChild('scrollToContactTarget') scrollToContactTarget!: ElementRef<HTMLElement>;
   @ViewChild('scrollToHomeTarget') scrollToHomeTarget!: ElementRef<HTMLElement>;
