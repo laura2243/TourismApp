@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { FormGroup } from '@angular/forms';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-register',
@@ -9,7 +9,22 @@ import { FormGroup } from '@angular/forms';
 export class RegisterComponent {
 
   registerForm!: FormGroup;
-  username !: String;
+  fullName !: String;
+  email !: String;
   password !: String;
+  passwordRepeate !: String;
+
+  ngOnInit() {
+    this.initRegisterForm();
+  }
+
+  initRegisterForm() {
+    this.registerForm = new FormGroup({
+      fullName: new FormControl('', Validators.required),
+      email: new FormControl('', Validators.required),
+      password: new FormControl('', Validators.required),
+      passwordRepeat: new FormControl('', Validators.required),
+    });
+  }
 
 }

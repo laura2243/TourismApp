@@ -176,7 +176,7 @@ nav ul li ul li {
     width: 40%;
     height: 50%;
     margin-left: 19%;
-    margin-top: 17%;
+    margin-top: 15%;
 
 
 
@@ -190,12 +190,12 @@ nav ul li ul li {
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    color: white !important;
+    /* color: white !important; */
     /* background-color: rgba(255, 255, 255, 0.2) !important; */
-    background-color: rgba(0, 0, 0, 0.2) !important;
-    border: 2px solid #fff;
+    /* background-color: rgba(0, 0, 0, 0.2) !important; */
+    /* border: 2px solid #fff; */
     border-radius: 10px;
-    box-shadow: 0 1px 8px rgba(255, 255, 255, 0.8);
+    /* box-shadow: 0 1px 8px rgba(255, 255, 255, 0.8); */
     transition: transform 0.3s;
 
     width: 100%;

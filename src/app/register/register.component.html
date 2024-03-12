@@ -18,33 +18,51 @@
         </nav>
 
 
+        <div class="title">
+            <h3>Begin Your Journey</h3>
+            <h1>REGISTER</h1>
+        </div>
+
+
+
         <div class="formWrapper">
             <div class="form">
 
-                <form [formGroup]="registerForm" class="ng-pristine ng-invalid ng-touched">
+                <form [formGroup]="registerForm">
 
 
                     <mat-form-field class="input">
-                        <mat-label>Your full name*</mat-label>
+                        <mat-label>Full name</mat-label>
                         <input type="text" matInput formControlName="fullName">
                     </mat-form-field>
 
                     <mat-form-field class="input">
-                        <mat-label>Your email*</mat-label>
+                        <mat-label>Email</mat-label>
                         <input type="text" matInput formControlName="email">
                     </mat-form-field>
 
-                    <mat-form-field class="inputContent">
-                        <mat-label>Password*</mat-label>
+                    <mat-form-field class="input">
+                        <mat-label>Password</mat-label>
                         <input matInput formControlName="password">
                     </mat-form-field>
 
-                    <mat-form-field class="inputContent">
-                        <mat-label>Repeat Your Password*</mat-label>
+                    <mat-form-field class="input">
+                        <mat-label>Repeat Password</mat-label>
                         <input matInput formControlName="passwordRepeat">
                     </mat-form-field>
+                    <!-- <div>
+                        <p class="alertLabel">Incorrect username or password!*</p>
+                    </div> -->
 
-                    <button>Send</button>
+                    <button>REGISTER</button>
+
+                    <mat-label class="registerLabel">Already have an account ?
+
+                        <a href="login">
+
+                            Login
+                        </a>
+                    </mat-label>
                 </form>
             </div>
         </div>
