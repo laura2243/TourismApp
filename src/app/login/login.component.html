@@ -1,0 +1,62 @@
+<body>
+    <div class="glass">
+        <nav>
+            <h2 class="logo">T||A</h2>
+            <ul>
+                <!-- <li><a (click)="scrollToHome()">HOME</a></li>
+        <li><a (click)="scrollToAboutUs()">ABOUT</a></li>
+        <li><a (click)="scrollToAllDestinations()">BOOKINGS</a>
+          <ul>
+            <li>
+              <a (click)="scrollToOffers()">OFFERS</a>
+            </li>
+          </ul>
+        </li>
+        <li><a (click)="scrollToContact()">CONTACT</a></li> -->
+                <li><a>SIGN IN</a></li>
+            </ul>
+        </nav>
+
+
+        <div class="title">
+            <h3>Unlock Your Adventure</h3>
+            <h1>LOGIN</h1>
+        </div>
+
+
+
+        <div class="formWrapper">
+            <div class="form">
+
+                <form [formGroup]="loginForm" >
+
+
+                    <mat-form-field class="input">
+                        <mat-label>Your email*</mat-label>
+                        <input type="text" matInput formControlName="email">
+                    </mat-form-field>
+
+                    <mat-form-field class="input">
+                        <mat-label>Password*</mat-label>
+                        <input matInput formControlName="password">
+                    </mat-form-field>
+
+                    <!-- <div>
+                        <p class="alertLabel">Incorrect username or password!*</p>
+                    </div> -->
+
+                    <button>LOGIN</button>
+
+                    <mat-label class="registerLabel"> Don't have an account yet?  
+                        
+                        <a href="register">
+                           
+                          Sign up
+                        </a>
+                      </mat-label>
+                </form>
+            </div>
+        </div>
+
+    </div>
+</body>
