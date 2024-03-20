@@ -19,6 +19,7 @@ import {MatSelectModule} from '@angular/material/select';
 // import { JwtServiceService } from './services/jwt-service.service';
 // import { HttpInterceptorService } from './services/http-interceptor.service';
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
+import { NotificationService } from './services/notification.service';
 
 @NgModule({
   declarations: [
@@ -49,7 +50,7 @@ import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
     //   useClass: HttpInterceptorService,
     //   multi: true
     // },
-    provideNativeDateAdapter(),provideAnimations()
+    provideNativeDateAdapter(),provideAnimations(), NotificationService
     // ,JwtServiceService
   ],
   bootstrap: [AppComponent]

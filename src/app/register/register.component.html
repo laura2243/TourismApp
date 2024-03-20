@@ -26,14 +26,14 @@
 
 
         <div class="formWrapper">
-            <div class="form">
+            <div class="form" >
 
-                <form [formGroup]="registerForm">
+                <form [formGroup]="registerForm" (ngSubmit)="onSubmit()" class="ng-pristine ng-invalid ng-touched">
 
 
                     <mat-form-field class="input">
                         <mat-label>Full name</mat-label>
-                        <input type="text" matInput formControlName="fullName">
+                        <input type="text" matInput formControlName="name">
                     </mat-form-field>
 
                     <mat-form-field class="input">
@@ -50,9 +50,15 @@
                         <mat-label>Repeat Password</mat-label>
                         <input matInput formControlName="passwordRepeat">
                     </mat-form-field>
-                    <!-- <div>
-                        <p class="alertLabel">Incorrect username or password!*</p>
-                    </div> -->
+                 
+
+                    <div class="text-center mt-3 " *ngIf='!passwordsMatch'>
+                        <p class="alertLabel">Passwords do not match!*</p>
+                    </div>
+
+                    <div class="text-center mt-3 " *ngIf='usernameExists'>
+                        <p class="alertLabel">Username already exists!*</p>
+                    </div>
 
                     <button>REGISTER</button>
 

@@ -254,6 +254,12 @@ nav ul li ul li {
 
 }
 
+button:disabled,
+button[disabled] {
+    background-color: rgb(36, 125, 72) !important;
+    cursor: default !important;
+
+}
 
 ::ng-deep .form form .mdc-text-field {
     background-color: rgba(0, 0, 0, 0.4) !important;
@@ -304,19 +310,19 @@ nav ul li ul li {
 
 ::ng-deep .mdc-text-field:not(.mdc-text-field--disabled) .mdc-floating-label {
     color: whitesmoke !important;
-   
+
 }
 
 ::ng-deep .mdc-text-field--focused:not(.mdc-text-field--disabled) .mdc-floating-label {
     color: whitesmoke !important;
-   
+
 }
 
 
 
 ::ng-deep .mdc-text-field--invalid:not(.mdc-text-field--disabled) .mdc-floating-label {
     color: red !important;
-    
+
 }
 
 
@@ -337,4 +343,3 @@ form a {
 .alertLabel {
     color: rgb(218, 75, 75);
 }
-
