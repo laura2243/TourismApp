@@ -16,6 +16,9 @@ import { LoginComponent } from './login/login.component';
 import { RegisterComponent } from './register/register.component';
 import { DestinationDialogComponent } from './destination-dialog/destination-dialog.component';
 import {MatSelectModule} from '@angular/material/select';
+// import { JwtServiceService } from './services/jwt-service.service';
+// import { HttpInterceptorService } from './services/http-interceptor.service';
+import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 
 @NgModule({
   declarations: [
@@ -27,7 +30,7 @@ import {MatSelectModule} from '@angular/material/select';
 
   ],
   imports: [
-
+    HttpClientModule,
     BrowserModule,
     AppRoutingModule,
     MatFormFieldModule,
@@ -40,7 +43,15 @@ import {MatSelectModule} from '@angular/material/select';
     MatDialogModule,
     MatSelectModule
   ],
-  providers: [provideNativeDateAdapter(),provideAnimations()],
+  providers: [
+    // {
+    //   provide: HTTP_INTERCEPTORS,
+    //   useClass: HttpInterceptorService,
+    //   multi: true
+    // },
+    provideNativeDateAdapter(),provideAnimations()
+    // ,JwtServiceService
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

@@ -4,6 +4,7 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { filter } from 'rxjs';
 import { MatDialog } from '@angular/material/dialog';
 import { DestinationDialogComponent } from '../destination-dialog/destination-dialog.component';
+import { ActivatedRoute } from '@angular/router';
 
 
 @Component({
@@ -15,9 +16,9 @@ export class HomeComponent implements OnInit {
 
   title = 'TourismApp';
   contactForm!: FormGroup;
-  adminRole : boolean = true;
   email!: any;
   content!: any;
+  userRole!: any;
 
   @ViewChild('scrollToOffersTarget') scrollToOffersTarget!: ElementRef<HTMLElement>;
   @ViewChild('scrollToAllDestinationsTarget') scrollToAllDestinationsTarget!: ElementRef<HTMLElement>;
@@ -26,13 +27,13 @@ export class HomeComponent implements OnInit {
   @ViewChild('scrollToAboutUsTarget') scrollToAboutUsTarget!: ElementRef<HTMLElement>;
 
 
-  constructor(private viewportScroller: ViewportScroller,public dialog: MatDialog) {
+  constructor(private viewportScroller: ViewportScroller, public dialog: MatDialog, private route: ActivatedRoute) {
   }
 
   openDialog(): void {
     const dialogRef = this.dialog.open(DestinationDialogComponent, {
       width: '60%',
-      height: '100%', 
+      height: '100%',
       panelClass: 'transparent-dialog', // CSS class for transparent background
     });
 
@@ -45,7 +46,17 @@ export class HomeComponent implements OnInit {
 
 
   ngOnInit(): void {
+    this.route.queryParams.subscribe(params => {
+       this.userRole = params['role'];
+      // Now you can use userRole in this component
+    });
     this.initContactForm()
+  }
+
+
+  isUserAdmin(): boolean {
+   
+    return this.userRole === 'ADMIN';
   }
 
 
@@ -92,9 +103,9 @@ export class HomeComponent implements OnInit {
       });
     }
 
-    if(this.filteredDestinations.length == 0){
+    if (this.filteredDestinations.length == 0) {
       this.showTextNoDestinationFound = true;
-    }else{
+    } else {
       this.showTextNoDestinationFound = false;
     }
     this.searchedDestination = true;

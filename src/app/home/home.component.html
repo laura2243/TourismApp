@@ -144,7 +144,7 @@
             <mat-date-range-picker #picker></mat-date-range-picker>
           </mat-form-field>
 
-          <button class="addDestButton" (click)="openDialog()">Add destination</button>
+          <button  *ngIf="isUserAdmin()" class="addDestButton" (click)="openDialog()">Add destination</button>
         </div>
 
 

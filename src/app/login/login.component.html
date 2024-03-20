@@ -28,7 +28,7 @@
         <div class="formWrapper">
             <div class="form">
 
-                <form [formGroup]="loginForm" >
+                <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="ng-pristine ng-invalid ng-touched" >
 
 
                     <mat-form-field class="input">
@@ -45,7 +45,7 @@
                         <p class="alertLabel">Incorrect username or password!*</p>
                     </div> -->
 
-                    <button>LOGIN</button>
+                    <button type="submit" [disabled]='loginForm.invalid'>LOGIN</button>
 
                     <mat-label class="registerLabel"> Don't have an account yet?  
                         
