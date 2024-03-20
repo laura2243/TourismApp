@@ -2,6 +2,8 @@ import { ViewportScroller } from '@angular/common';
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { filter } from 'rxjs';
+import { MatDialog } from '@angular/material/dialog';
+import { DestinationDialogComponent } from '../destination-dialog/destination-dialog.component';
 
 
 @Component({
@@ -13,6 +15,9 @@ export class HomeComponent implements OnInit {
 
   title = 'TourismApp';
   contactForm!: FormGroup;
+  adminRole : boolean = true;
+  email!: any;
+  content!: any;
 
   @ViewChild('scrollToOffersTarget') scrollToOffersTarget!: ElementRef<HTMLElement>;
   @ViewChild('scrollToAllDestinationsTarget') scrollToAllDestinationsTarget!: ElementRef<HTMLElement>;
@@ -21,7 +26,20 @@ export class HomeComponent implements OnInit {
   @ViewChild('scrollToAboutUsTarget') scrollToAboutUsTarget!: ElementRef<HTMLElement>;
 
 
-  constructor(private viewportScroller: ViewportScroller) {
+  constructor(private viewportScroller: ViewportScroller,public dialog: MatDialog) {
+  }
+
+  openDialog(): void {
+    const dialogRef = this.dialog.open(DestinationDialogComponent, {
+      width: '60%',
+      height: '100%', 
+      panelClass: 'transparent-dialog', // CSS class for transparent background
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('The dialog was closed', result);
+      // Here you can handle the form data, e.g., submit it to a service
+    });
   }
 
 

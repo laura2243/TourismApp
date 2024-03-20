@@ -1,0 +1,136 @@
+/*************************************************** TITLE  ****************************************************/
+
+.title {
+    /* height: 50%;
+    width: 100%; */
+    margin-top: 30%;
+    margin-left: 2%;
+    
+}
+
+h3 {
+    color: #fff;
+    /* margin: 3% 2% -20px; */
+    font-style: italic;
+    font-weight: 100;
+    font-size: 15px;
+    letter-spacing: 1px;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+
+}
+
+h1 {
+    color: #fff;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    font-size: 50px;
+    letter-spacing: 5px;
+    height: 70%;
+    opacity: 0.6;
+    background-image: linear-gradient(45deg, #000, #fff, #817f7f, #fff, #000);
+    background-size: 100%;
+    background-clip: text;
+    -webkit-background-clip: text;
+    color: transparent !important;
+
+
+}
+
+
+/* ******************************************************FORM******************************************************** */
+
+.form {
+    
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    color: white !important;
+    /* background-color: rgba(255, 255, 255, 0.2) !important; */
+    /* background-color: rgba(0, 0, 0, 0.2) !important; */
+    border: 2px solid #fff;
+    border-radius: 10px;
+    box-shadow: 0 1px 8px rgba(255, 255, 255, 0.8);
+    transition: transform 0.3s;
+    cursor: pointer;
+    font-family: Verdana, Geneva, Tahoma, sans-serif !important;
+}
+
+.form form {
+    gap: 5%;
+    padding-top: 3%;
+    color: white !important;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    height: 90%;
+}
+
+
+.formWrapper {
+
+    display: flex;
+    flex-direction: column;
+
+
+
+}
+
+.input {
+    cursor: pointer;
+    color: white !important;
+    border: none;
+    border-radius: 10px;
+    background-color: transparent;
+    padding-top: 3%;
+    width: 20vw !important;
+    height: 10vh !important;
+    border-radius: 5px !important;
+}
+
+button {
+    display: flex;
+    justify-content: center;
+    font-size: 15px;
+
+    font-family: Verdana, Geneva, Tahoma, sans-serif !important;
+    background-color: rgb(36, 125, 72);
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 10px 20px;
+    cursor: pointer;
+    display: flex;
+    width: 20vw;
+    margin-bottom: 2%;
+    box-shadow: 0 1px 8px rgba(36, 125, 72, 0.8);
+    margin-top: 5%;
+
+
+}
+
+button:hover {
+    background-color: rgb(28, 95, 55);
+
+}
+
+::ng-deep .transparent-dialog .mat-dialog-container {
+    background-color: rgba(0, 0, 0, 0.2) !important;
+    border-radius: 10px;
+}
+
+::ng-deep .mat-mdc-dialog-container .mdc-dialog__surface{
+    background-color: rgba(0, 0, 0, 0.8) !important;
+    margin-top: 30% !important;
+   
+}
+
+
+.transparent-dialog {
+    margin-top: 30%;
+}
+
+mat-dialog-actions{
+    padding: 0;
+    margin: 0;
+}

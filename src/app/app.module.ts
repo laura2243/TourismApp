@@ -1,10 +1,11 @@
-import { NgModule } from '@angular/core'
+import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatDatepickerModule} from '@angular/material/datepicker';
 import { MatCardModule } from '@angular/material/card';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
+import {MatDialogModule} from '@angular/material/dialog';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import {provideNativeDateAdapter} from '@angular/material/core';
 import { provideAnimations } from '@angular/platform-browser/animations';
@@ -13,15 +14,20 @@ import { AppComponent } from './app.component';
 import { HomeComponent } from './home/home.component';
 import { LoginComponent } from './login/login.component';
 import { RegisterComponent } from './register/register.component';
+import { DestinationDialogComponent } from './destination-dialog/destination-dialog.component';
+import {MatSelectModule} from '@angular/material/select';
 
 @NgModule({
   declarations: [
     AppComponent,
     HomeComponent,
     LoginComponent,
-    RegisterComponent
+    RegisterComponent,
+    DestinationDialogComponent
+
   ],
   imports: [
+
     BrowserModule,
     AppRoutingModule,
     MatFormFieldModule,
@@ -30,7 +36,9 @@ import { RegisterComponent } from './register/register.component';
     MatInputModule,
     MatButtonModule,
     FormsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    MatDialogModule,
+    MatSelectModule
   ],
   providers: [provideNativeDateAdapter(),provideAnimations()],
   bootstrap: [AppComponent]
