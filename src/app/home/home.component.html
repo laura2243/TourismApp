@@ -14,7 +14,7 @@
     href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"
     integrity="sha512-**********" crossorigin="anonymous" />
-
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 </head>
 
 <body>
@@ -102,7 +102,9 @@
         <div class="card-container-wrapper">
           <div class="card-container">
             <div class="card" *ngFor="let offerDestination of offerDestinations">
-              <img [src]="offerDestination.imageUrl" alt="Destination Image">
+              <img [src]="offerDestination.imageUrl" alt="Destination Image" >
+       
+
               <span class="sale">-40%</span>
               <h2 class="info">{{ offerDestination.title }}</h2>
               <p class="info">{{ offerDestination.description }}</p>
@@ -144,7 +146,7 @@
             <mat-date-range-picker #picker></mat-date-range-picker>
           </mat-form-field>
 
-          <button  *ngIf="isUserAdmin()" class="addDestButton" (click)="openDialog()">Add destination</button>
+          <button *ngIf="isUserAdmin()" class="addDestButton" (click)="openDialog('add')">Add destination</button>
         </div>
 
 
@@ -157,13 +159,19 @@
 
             <div class="card" *ngFor="let destination of (searchedDestination ? filteredDestinations : destinations)">
 
-              <img [src]="destination.imageUrl" alt="Destination Image">
+              <img [src]="'data:image/jpeg;base64,'+destination.image_data" alt="Destination Image">
               <h2 class="info">{{ destination.title }}</h2>
               <p class="info">{{ destination.description }}</p>
               <p class="info">{{ destination.location }}</p>
               <p class="info">Price: ${{ destination.price }}</p>
               <p class="info">Available spots: {{ destination.availableSpots }}</p>
+
+
+
+              <i class="material-icons delete-icon" (click)="open(destination)">delete</i>
               <button>Book Now</button>
+              <i class="material-icons edit-icon" (click)="openDialog('update',destination)">edit</i>
+
 
             </div>
           </div>

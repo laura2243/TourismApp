@@ -5,6 +5,10 @@ import { filter } from 'rxjs';
 import { MatDialog } from '@angular/material/dialog';
 import { DestinationDialogComponent } from '../destination-dialog/destination-dialog.component';
 import { ActivatedRoute } from '@angular/router';
+import { Destination } from '../data-types/destination.data';
+import { DestinationService } from '../services/destination.service';
+import { DialogService } from '../services/dialog-service.service';
+import { DialogBoxComponent } from '../dialog-box/dialog-box.component';
 
 
 @Component({
@@ -19,6 +23,8 @@ export class HomeComponent implements OnInit {
   email!: any;
   content!: any;
   userRole!: any;
+  destinations: Destination[] = [];
+  loginForm: any;
 
   @ViewChild('scrollToOffersTarget') scrollToOffersTarget!: ElementRef<HTMLElement>;
   @ViewChild('scrollToAllDestinationsTarget') scrollToAllDestinationsTarget!: ElementRef<HTMLElement>;
@@ -27,14 +33,19 @@ export class HomeComponent implements OnInit {
   @ViewChild('scrollToAboutUsTarget') scrollToAboutUsTarget!: ElementRef<HTMLElement>;
 
 
-  constructor(private viewportScroller: ViewportScroller, public dialog: MatDialog, private route: ActivatedRoute) {
+  constructor(private viewportScroller: ViewportScroller, public dialog: MatDialog, private route: ActivatedRoute,
+    private destinationService: DestinationService, private dialogService: DialogService) {
   }
 
-  openDialog(): void {
+  openDialog(action: string, destination?: Destination): void {
     const dialogRef = this.dialog.open(DestinationDialogComponent, {
       width: '60%',
-      height: '100%',
-      panelClass: 'transparent-dialog', // CSS class for transparent background
+      height: '70%',
+      panelClass: 'transparent-dialog', 
+      data: {
+        action: action, 
+        destination: destination
+      }
     });
 
     dialogRef.afterClosed().subscribe(result => {
@@ -46,24 +57,32 @@ export class HomeComponent implements OnInit {
 
 
   ngOnInit(): void {
+    this.destinationService.getDestinations().subscribe(
+      {
+        next: (data: Destination[]) => {
+          this.destinations = [...data]
+          console.log(this.destinations)
+        }
+      }
+    )
+
     this.route.queryParams.subscribe(params => {
-       this.userRole = params['role'];
-      // Now you can use userRole in this component
+      this.userRole = params['role'];
+
     });
     this.initContactForm()
   }
 
 
   isUserAdmin(): boolean {
-   
-    return this.userRole === 'ADMIN';
+    return this.userRole === 'admin';
   }
 
 
   initContactForm() {
     this.contactForm = new FormGroup({
-      username: new FormControl('', Validators.required),
-      password: new FormControl('', Validators.required),
+      email: new FormControl('', Validators.required),
+      content: new FormControl('', Validators.required),
     });
   }
 
@@ -88,7 +107,6 @@ export class HomeComponent implements OnInit {
   }
 
 
-
   filteredDestinations: any[] = [];
   searchQuery: string = '';
   searchedDestination: boolean = false;
@@ -99,7 +117,7 @@ export class HomeComponent implements OnInit {
       this.filteredDestinations = this.destinations;
     } else {
       this.filteredDestinations = this.destinations.filter(destination => {
-        return destination.location.toLowerCase() === this.searchQuery.toLowerCase();
+        return destination.location?.toLowerCase() === this.searchQuery.toLowerCase();
       });
     }
 
@@ -113,49 +131,6 @@ export class HomeComponent implements OnInit {
   }
 
 
-  destinations = [
-    {
-      imageUrl: '../assets/cardPhoto0.jpg',
-      title: 'Destination 1',
-      description: 'Description for destination 1.',
-      location: 'Here',
-      price: 100,
-      availableSpots: 5
-    },
-    {
-      imageUrl: '../assets/cardPhoto1.jpg',
-      title: 'Destination 2',
-      description: 'Description for destination 2.',
-      location: 'Location for destination 1.',
-      price: 150,
-      availableSpots: 10
-    },
-    {
-      imageUrl: '../assets/cardPhoto.jpg',
-      title: 'Destination 2',
-      description: 'Description for destination 2.',
-      location: 'Location for destination 1.',
-      price: 150,
-      availableSpots: 10
-    },
-    {
-      imageUrl: '../assets/cardPhoto.jpg',
-      title: 'Destination 2',
-      description: 'Description for destination 2.',
-      location: 'Location for destination 1.',
-      price: 150,
-      availableSpots: 10
-    },
-    {
-      imageUrl: '../assets/cardPhoto.jpg',
-      title: 'Destination 2',
-      description: 'Description for destination 2.',
-      location: 'Location for destination 1.',
-      price: 150,
-      availableSpots: 10
-    },
-
-  ];
 
 
   offerDestinations = [
@@ -206,6 +181,48 @@ export class HomeComponent implements OnInit {
     },
 
   ];
-  loginForm: any;
+
+
+
+  open(destination: Destination) {
+
+
+    let dialogRef = this.openDialogDeleteUser("Are you sure you want to delete this device?", false, true, false, destination)
+  }
+
+  openDialogDeleteUser(modalText: string, onLogout: boolean, onDeleteUser: boolean, onPasswordChange: boolean, destination: Destination): any {
+    let dialogRef = this.dialog.open(DialogBoxComponent, {
+      data: { content: modalText, onLogout: onLogout, onDeleteUser: onDeleteUser, onPasswordChange: onPasswordChange, destination: destination },
+    });
+    dialogRef.afterClosed().subscribe((result: string) => {
+      if (result) {
+        this.deleteDestination(destination)
+
+      }
+    }
+
+    )
+
+  }
+
+  deleteDestination(destination: Destination) {
+    this.destinationService.deleteDestination(destination.id).subscribe({
+      next: () => {
+
+        this.dialogService.openDialog("Destination deleted successfully!", false, false, true, false);
+        window.location.reload();
+
+      }, error: () => {
+
+        this.dialogService.openDialog("Couldn't delete Destination!", false, false, true, false);
+        console.debug;
+      }
+    }
+    );
+  }
+
+  
+
+
 
 }

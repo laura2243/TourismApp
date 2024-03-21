@@ -3,9 +3,10 @@
 .title {
     /* height: 50%;
     width: 100%; */
-    margin-top: 30%;
+    margin-top: 90%;
     margin-left: 2%;
-    
+    margin-bottom: 5%;
+
 }
 
 h3 {
@@ -31,6 +32,7 @@ h1 {
     background-clip: text;
     -webkit-background-clip: text;
     color: transparent !important;
+    padding-top: 2%;
 
 
 }
@@ -39,7 +41,7 @@ h1 {
 /* ******************************************************FORM******************************************************** */
 
 .form {
-    
+
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -49,7 +51,7 @@ h1 {
     /* background-color: rgba(0, 0, 0, 0.2) !important; */
     border: 2px solid #fff;
     border-radius: 10px;
-    box-shadow: 0 1px 8px rgba(255, 255, 255, 0.8);
+    box-shadow: 0 1px 8px rgba(0, 0, 0, 0.8);
     transition: transform 0.3s;
     cursor: pointer;
     font-family: Verdana, Geneva, Tahoma, sans-serif !important;
@@ -88,7 +90,40 @@ h1 {
     border-radius: 5px !important;
 }
 
-button {
+.inputImage {
+    cursor: pointer;
+    color: white !important;
+    border: none;
+    border-radius: 10px;
+    background-color: transparent;
+    padding-top: 3%;
+  
+    border-radius: 5px !important;
+}
+
+mat-dialog-actions button {
+    display: flex;
+    justify-content: center;
+    font-size: 15px;
+
+    font-family: Verdana, Geneva, Tahoma, sans-serif !important;
+    background-color: rgb(36, 125, 72);
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 10px 20px;
+    cursor: pointer;
+    display: flex;
+    width: 20vw;
+    margin-bottom: 2%;
+    box-shadow: 0 1px 8px rgba(36, 125, 72, 0.8);
+    margin-top: 5%;
+
+
+}
+
+
+form button {
     display: flex;
     justify-content: center;
     font-size: 15px;
@@ -119,18 +154,53 @@ button:hover {
     border-radius: 10px;
 }
 
-::ng-deep .mat-mdc-dialog-container .mdc-dialog__surface{
-    background-color: rgba(0, 0, 0, 0.8) !important;
+::ng-deep .mat-mdc-dialog-container .mdc-dialog__surface {
+
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 30% !important;
+    -webkit-backdrop-filter: blur(10px) saturate(180%);
+    backdrop-filter: blur(10px) saturate(180%);
+    background-color: rgba(0, 0, 0, .5);
     margin-top: 30% !important;
-   
+
 }
+
+::ng-deep .mat-mdc-dialog-container .mdc-dialog__surface::-webkit-scrollbar {
+    display: none;
+}
+::ng-deep .mat-dialog-container::-webkit-scrollbar {
+    display: none;
+}
+
 
 
 .transparent-dialog {
     margin-top: 30%;
 }
 
-mat-dialog-actions{
+mat-dialog-actions {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
     padding: 0;
     margin: 0;
+    width: 80%;
+}
+
+.image{
+    width: 20vw !important;
+    cursor: pointer;
+    color: white !important;
+    border: none;
+    border-radius: 10px;
+    background-color: transparent;
+    padding-top: 3%;
+  
+    border-radius: 5px !important;
+}
+
+.imageContainer{
+    display: flex;
+    flex-direction: column;
 }

@@ -1,13 +1,30 @@
 <mat-dialog-content class="form">
 
-    <div class="title">
-        <h3>Add a new</h3>
-        <h1>DESTINATION</h1>
-    </div>
+
 
     <div class="formWrapper">
 
-        <form [formGroup]="addDestinationForm" class="ng-pristine ng-invalid ng-touched">
+
+        <div class="title">
+            <h3>Add a new</h3>
+            <h1>DESTINATION</h1>
+        </div>
+
+        <form [formGroup]="addDestinationForm" class="ng-pristine ng-invalid ng-touched" (ngSubmit)="onSubmit()" >
+
+            <div class="imageContainer" [style.height.px]="imageSelected ? 'auto' : '56px'">
+                <mat-form-field class="input">
+                    <mat-label>Select a file</mat-label>
+                    <input matInput type="text" disabled [value]="coverImgFile || 'Choose an image'"
+                        [matTooltip]="coverImgFileName" [required]="false">
+                    <mat-icon matSuffix (click)="fileInput.click()" style="cursor: pointer">attach_file</mat-icon>
+                    <input #fileInput type="file" (change)="onFileSelected($event)" style="display: none;"
+                        [formControlName]="'image'">
+
+                </mat-form-field>
+                <!-- <img *ngIf="imageSelected" src={{this.showImg}} class="image"> -->
+            </div>
+
 
             <mat-form-field class="input">
                 <mat-label>Title</mat-label>
@@ -31,26 +48,30 @@
 
             <mat-form-field class="input">
                 <mat-label>Discount</mat-label>
-                <mat-select [(value)]="discount">
+                <!-- <mat-select [(value)]="discount">
                     <mat-option value="0">0%</mat-option>
                     <mat-option value="5">5%</mat-option>
                     <mat-option value="10">10%</mat-option>
-                    <!-- Add more options as needed -->
-                </mat-select>
+                
+                </mat-select> -->
+                <input matInput type="number" placeholder="Discount" formControlName="discount">
+
             </mat-form-field>
 
             <mat-form-field class="input">
                 <mat-label>Available spots</mat-label>
-                <input matInput type="number" placeholder="Available spots" formControlName="availableSpots">
+                <input matInput type="number" placeholder="Available spots" formControlName="available_spots">
             </mat-form-field>
 
+            <button  type="submit" >Add</button>
 
         </form>
 
-        <mat-dialog-actions>
-            <button (click)="closeDialog()">Cancel</button>
-            <button [mat-dialog-close]="formData">Add</button>
-        </mat-dialog-actions>
-
+       
     </div>
+    <!-- <mat-dialog-actions>
+        <button (click)="closeDialog()">Cancel</button>
+        
+    </mat-dialog-actions> -->
+
 </mat-dialog-content>

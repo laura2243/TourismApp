@@ -20,6 +20,10 @@ import {MatSelectModule} from '@angular/material/select';
 // import { HttpInterceptorService } from './services/http-interceptor.service';
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { NotificationService } from './services/notification.service';
+import { DialogBoxComponent } from './dialog-box/dialog-box.component';
+import {MatIconModule} from '@angular/material/icon';
+import {MatTooltipModule} from '@angular/material/tooltip';
+
 
 @NgModule({
   declarations: [
@@ -27,10 +31,13 @@ import { NotificationService } from './services/notification.service';
     HomeComponent,
     LoginComponent,
     RegisterComponent,
-    DestinationDialogComponent
+    DestinationDialogComponent,
+    DialogBoxComponent
 
   ],
   imports: [
+    MatTooltipModule,
+    MatIconModule,
     HttpClientModule,
     BrowserModule,
     AppRoutingModule,
