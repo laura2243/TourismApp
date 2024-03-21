@@ -21,7 +21,7 @@ export class DestinationDialogComponent implements OnInit {
   available_spots: number = 0;
   addDestinationForm!: FormGroup;
   toUpdateDestination !: Destination;
-  image !: any;
+  image_name !: any;
 
   constructor(public dialogRef: MatDialogRef<DestinationDialogComponent>, @Inject(MAT_DIALOG_DATA) public data: any,
     public destinationService: DestinationService, private notif: NotificationService,
@@ -36,6 +36,7 @@ export class DestinationDialogComponent implements OnInit {
     else if (this.data.action === 'update') {
 
       this.initUpdateForm(this.data.destination);
+      
     }
 
   }
@@ -45,7 +46,7 @@ export class DestinationDialogComponent implements OnInit {
 
   initForm() {
     this.addDestinationForm = new FormGroup({
-      image: new FormControl('', Validators.required),
+      image_name: new FormControl('', Validators.required),
       title: new FormControl('', Validators.required),
       location: new FormControl('', Validators.required),
       description: new FormControl('', Validators.required),
@@ -70,15 +71,15 @@ export class DestinationDialogComponent implements OnInit {
 
 
     const byteCharacters = atob(destination.image_data);
-      const byteNumbers = new Array(byteCharacters.length);
-      for (let i = 0; i < byteCharacters.length; i++) {
-        byteNumbers[i] = byteCharacters.charCodeAt(i);
-      }
-      const byteArray = new Uint8Array(byteNumbers);
-      const blob = new Blob([byteArray], {type: 'image/png'}); // Adjust the MIME type according to your image type
+    const byteNumbers = new Array(byteCharacters.length);
+    for (let i = 0; i < byteCharacters.length; i++) {
+      byteNumbers[i] = byteCharacters.charCodeAt(i);
+    }
+    const byteArray = new Uint8Array(byteNumbers);
+    const blob = new Blob([byteArray], { type: 'image/png' }); // Adjust the MIME type according to your image type
 
-      // Create File object
-      this.coverImgFile = new File([blob], destination.image_name!, {type: 'image/png'})
+    // Create File object
+    this.coverImgFile = new File([blob], destination.image_name!, { type: 'image/png' })
   }
 
   closeDialog() {
@@ -115,10 +116,8 @@ export class DestinationDialogComponent implements OnInit {
   onSubmit() {
 
 
-
-
-
     const destination: Destination = {
+      id: this.data.destination.id,
       title: this.addDestinationForm.get('title')?.value,
       location: this.addDestinationForm.get('location')?.value,
       description: this.addDestinationForm.get('description')?.value,
@@ -127,23 +126,50 @@ export class DestinationDialogComponent implements OnInit {
       available_spots: this.addDestinationForm.get('available_spots')?.value
     };
 
-    this.destinationService.addDestination(destination,this.coverImgFile).subscribe({
-      next: () => {
+
+    if (this.data.action === 'add') {
 
 
-        this.snackBar.open('Destination successfully added', 'Close', {
-          duration: 5000,
-        });
+      this.destinationService.addDestination(destination, this.coverImgFile).subscribe({
+        next: () => {
 
 
-      }, error: () => {
+          this.snackBar.open('Destination successfully added', 'Close', {
+            duration: 5000,
+          });
 
-        this.notif.showPopupMessage("Couldn't add destination!", "OK")
-        console.debug;
+
+        }, error: () => {
+
+          this.notif.showPopupMessage("Couldn't add destination!", "OK")
+          console.debug;
+        }
       }
-    }
 
-    );
+      );
+    } else if (this.data.action === 'update') {
+
+      console.log(destination)
+      this.destinationService.updateDestination(destination, this.coverImgFile).subscribe({
+        next: () => {
+
+
+          this.snackBar.open('Destination successfully updated', 'Close', {
+            duration: 5000,
+          });
+
+
+        }, error: () => {
+
+          this.notif.showPopupMessage("Couldn't update destination!", "OK")
+          console.debug;
+        }
+      }
+
+      );
+
+
+    }
   }
 
 }

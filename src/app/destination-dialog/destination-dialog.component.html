@@ -19,7 +19,8 @@
                         [matTooltip]="coverImgFileName" [required]="false">
                     <mat-icon matSuffix (click)="fileInput.click()" style="cursor: pointer">attach_file</mat-icon>
                     <input #fileInput type="file" (change)="onFileSelected($event)" style="display: none;"
-                        [formControlName]="'image'">
+                       
+                        >
 
                 </mat-form-field>
                 <!-- <img *ngIf="imageSelected" src={{this.showImg}} class="image"> -->

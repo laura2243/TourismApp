@@ -35,10 +35,6 @@ export class DestinationService {
   }
 
 
-
-
-
-
   getDestinations(): Observable<any> {
 
     return this.http.get<Destination[]>(this.GET_DESTINATIONS_URL).pipe(
@@ -52,13 +48,20 @@ export class DestinationService {
 
 
 
-  updateDestination(body: Destination) {
+  updateDestination(destination: any, image: File) {
 
-    const UPDATE_DESTINATION_URL: string = `http://localhost:5000/destination/update/${body.id}`;
+    const UPDATE_DESTINATION_URL: string = `http://localhost:5000/destination/update/${destination.id}`;
 
-    return this.http.put(UPDATE_DESTINATION_URL, body, { responseType: 'text' }).pipe(
+    const formData = new FormData();
+    formData.append('destination', JSON.stringify(destination));
+    formData.append('image', image);
+
+    return this.http.put(
+      UPDATE_DESTINATION_URL,
+      formData
+    ).pipe(
       catchError(this.handleError)
-    )
+    );
   }
 
 
