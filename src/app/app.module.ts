@@ -23,6 +23,8 @@ import { NotificationService } from './services/notification.service';
 import { DialogBoxComponent } from './dialog-box/dialog-box.component';
 import {MatIconModule} from '@angular/material/icon';
 import {MatTooltipModule} from '@angular/material/tooltip';
+import { DatePipe } from '@angular/common';
+import { CustomDateFormatPipe } from './services/date-format.service';
 
 
 @NgModule({
@@ -32,7 +34,8 @@ import {MatTooltipModule} from '@angular/material/tooltip';
     LoginComponent,
     RegisterComponent,
     DestinationDialogComponent,
-    DialogBoxComponent
+    DialogBoxComponent,
+    CustomDateFormatPipe
 
   ],
   imports: [
@@ -57,7 +60,7 @@ import {MatTooltipModule} from '@angular/material/tooltip';
     //   useClass: HttpInterceptorService,
     //   multi: true
     // },
-    provideNativeDateAdapter(),provideAnimations(), NotificationService
+    provideNativeDateAdapter(),provideAnimations(), NotificationService,DatePipe
     // ,JwtServiceService
   ],
   bootstrap: [AppComponent]

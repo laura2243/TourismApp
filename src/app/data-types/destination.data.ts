@@ -8,5 +8,7 @@ export interface Destination{
     discount?: number,
     image_data?: any, 
     image_name?: string
+    start_date?: string; 
+    end_date?: string;   
 }
  

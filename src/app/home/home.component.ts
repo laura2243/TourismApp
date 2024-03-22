@@ -37,7 +37,7 @@ export class HomeComponent implements OnInit {
     private destinationService: DestinationService, private dialogService: DialogService) {
   }
 
-  openDialog(action: string, destination?: Destination): void {
+  openDialogUpdate(action: string, destination?: Destination): void {
     const dialogRef = this.dialog.open(DestinationDialogComponent, {
       width: '80vw',
       height: '90vh',
@@ -50,7 +50,41 @@ export class HomeComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe(result => {
       console.log('The dialog was closed', result);
-      // Here you can handle the form data, e.g., submit it to a service
+      this.destinationService.getDestinations().subscribe(
+        {
+          next: (data: Destination[]) => {
+            this.destinations = [...data]
+            console.log(this.destinations)
+          }
+        }
+      )
+
+    });
+  }
+
+  openDialogAdd(action: string, destination?: Destination): void {
+    const dialogRef = this.dialog.open(DestinationDialogComponent, {
+      width: '80vw',
+      height: '90vh',
+      panelClass: 'transparent-dialog',
+      data: {
+        action: action,
+        destination: destination
+      }
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('The dialog was closed', result);
+
+      this.destinationService.getDestinations().subscribe(
+        {
+          next: (data: Destination[]) => {
+            this.destinations = [...data]
+            console.log(this.destinations)
+          }
+        }
+      )
+      
     });
   }
 
@@ -208,7 +242,15 @@ export class HomeComponent implements OnInit {
       next: () => {
 
         this.dialogService.openDialog("Destination deleted successfully!", false, false, true, false);
-        window.location.reload();
+        this.destinationService.getDestinations().subscribe(
+          {
+            next: (data: Destination[]) => {
+              this.destinations = [...data]
+              console.log(this.destinations)
+            }
+          }
+        )
+
 
       }, error: () => {
 

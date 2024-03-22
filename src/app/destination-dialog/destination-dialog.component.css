@@ -88,7 +88,7 @@ h1 {
     color: white !important;
     border: none;
     border-radius: 10px;
-    background-color: transparent;
+    /* background-color: transparent; */
     width: 20vw !important;
     height: 10vh !important;
     border-radius: 5px !important;

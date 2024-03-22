@@ -6,6 +6,8 @@ import { DestinationService } from '../services/destination.service';
 import { Router } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { NotificationService } from '../services/notification.service';
+import { DatePipe } from '@angular/common';
+import { EventEmitter } from '@angular/core';
 
 @Component({
   selector: 'app-destination-dialog',
@@ -13,9 +15,15 @@ import { NotificationService } from '../services/notification.service';
   styleUrls: ['./destination-dialog.component.css']
 })
 export class DestinationDialogComponent implements OnInit {
+
+
+  refreshEvent: EventEmitter<void> = new EventEmitter<void>();
+
   title: string = '';
   location: string = '';
   description: string = '';
+  start_date: string = '';
+  end_date: string = '';
   price: number = 0;
   discount: number = 0;
   available_spots: number = 0;
@@ -27,7 +35,7 @@ export class DestinationDialogComponent implements OnInit {
 
   constructor(public dialogRef: MatDialogRef<DestinationDialogComponent>, @Inject(MAT_DIALOG_DATA) public data: any,
     public destinationService: DestinationService, private notif: NotificationService,
-    private router: Router, private snackBar: MatSnackBar) { }
+    private router: Router, private snackBar: MatSnackBar,private datePipe: DatePipe) { }
 
 
   ngOnInit(): void {
@@ -59,11 +67,14 @@ export class DestinationDialogComponent implements OnInit {
       price: new FormControl('', Validators.required),
       discount: new FormControl('', Validators.required),
       available_spots: new FormControl('', Validators.required),
+      start_date: new FormControl('', Validators.required),
+      end_date: new FormControl('', Validators.required),
     });
   }
 
 
   initUpdateForm(destination: Destination) {
+
 
     this.addDestinationForm = new FormGroup({
       image_name: new FormControl(destination.image_name, Validators.required),
@@ -73,7 +84,11 @@ export class DestinationDialogComponent implements OnInit {
       price: new FormControl(destination.price, Validators.required),
       discount: new FormControl(destination.discount, Validators.required),
       available_spots: new FormControl(destination.available_spots, Validators.required),
+      start_date: new FormControl(destination.start_date, Validators.required),
+      end_date: new FormControl(destination.end_date, Validators.required),
     });
+
+    console.log(destination.start_date)
 
 
     const byteCharacters = atob(destination.image_data);
@@ -92,18 +107,6 @@ export class DestinationDialogComponent implements OnInit {
     this.dialogRef.close();
   }
 
-  get formData() {
-    return {
-      title: this.title,
-      location: this.location,
-      description: this.description,
-      price: this.price,
-      discount: this.discount,
-      available_spots: this.available_spots
-    };
-  }
-
-
 
   showImg !: any;
   coverImgFile!: File;
@@ -119,18 +122,29 @@ export class DestinationDialogComponent implements OnInit {
     this.showImg = URL.createObjectURL(event.target.files[0]);
   }
 
+  private formatDate(date: Date): string {
+    if (!date) return ''; // Handle null or undefined values
+    const month = (date.getMonth() + 1).toString().padStart(2, '0');
+    const day = date.getDate().toString().padStart(2, '0');
+    const year = date.getFullYear();
+    return `${month}/${day}/${year}`;
+  }
   onSubmit() {
 
 
     const destination: Destination = {
-      id: this.data.destination.id,
+
       title: this.addDestinationForm.get('title')?.value,
       location: this.addDestinationForm.get('location')?.value,
       description: this.addDestinationForm.get('description')?.value,
       price: this.addDestinationForm.get('price')?.value,
       discount: this.addDestinationForm.get('discount')?.value,
-      available_spots: this.addDestinationForm.get('available_spots')?.value
+      available_spots: this.addDestinationForm.get('available_spots')?.value,
+      start_date: this.formatDate(this.addDestinationForm.get('start_date')?.value),
+      end_date: this.formatDate(this.addDestinationForm.get('end_date')?.value)
     };
+
+
 
 
     if (this.data.action === 'add') {
@@ -142,16 +156,24 @@ export class DestinationDialogComponent implements OnInit {
             duration: 5000,
           });
 
+          this.dialogRef.close();
+          this.refreshEvent.emit();
+
+          
+
         }, error: () => {
 
           this.notif.showPopupMessage("Couldn't add destination!", "OK")
+          this.dialogRef.close();
           console.debug;
         }
+
       }
 
       );
     } else if (this.data.action === 'update') {
 
+      destination.id = this.data.destination.id;
       console.log(destination)
       this.destinationService.updateDestination(destination, this.coverImgFile).subscribe({
         next: () => {
@@ -160,12 +182,14 @@ export class DestinationDialogComponent implements OnInit {
           this.snackBar.open('Destination successfully updated', 'Close', {
             duration: 5000,
           });
+          this.dialogRef.close();
 
 
         }, error: () => {
 
           this.notif.showPopupMessage("Couldn't update destination!", "OK")
           console.debug;
+          this.dialogRef.close();
         }
       }
 
