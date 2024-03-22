@@ -247,3 +247,8 @@ mat-dialog-actions {
     display: flex;
     flex-direction: column;
 }
+
+
+::ng-deep .mat-date-range-input-separator{
+    color: white !important;
+}

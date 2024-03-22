@@ -21,15 +21,15 @@ export class LoginComponent implements OnInit {
 
   constructor(private loginService: LoginService, private router: Router, private cookieService: CookieService,
     // private jwtService: JwtServiceService, private httpService: HttpService
-    ) { }
+  ) { }
 
   ngOnInit() {
     this.initLoginForm();
   }
 
   initLoginForm() {
-    
-    
+
+
     this.loginForm = new FormGroup({
       email: new FormControl('', Validators.required),
       password: new FormControl('', Validators.required),
@@ -50,6 +50,24 @@ export class LoginComponent implements OnInit {
   }
 
 
+  locateUser(): void {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition((position) => {
+        const latitude = position.coords.latitude;
+        const longitude = position.coords.longitude;
+        const userLocation = { latitude, longitude };
+
+        localStorage.setItem('userLocation', JSON.stringify(userLocation));
+
+
+        console.log('User location saved:', userLocation);
+      }, (error) => {
+        console.error('Error getting user location:', error);
+      });
+    } else {
+      console.error('Geolocation is not supported by this browser.');
+    }
+  }
   onSubmit() {
 
     console.log("da")
@@ -58,26 +76,30 @@ export class LoginComponent implements OnInit {
     this.password = this.loginForm.get('password')?.value
 
 
-    
+
 
     this.loginService.login<User>(this.loginForm.value).subscribe({
       next: () => {
-       
+
 
         let userRole !: string;
         userRole = this.getUserRole()
-       
+
         if (userRole == null) {
-        
+
           this.userFound = false;
         } else {
-            if (userRole == "admin") {
-              this.router.navigate(['/'], { queryParams: { role: userRole }})
-            } else if (userRole == "client") {
-              this.router.navigate(['/'],  { queryParams: { role: userRole }})
-            } else {
-              console.log("User has no specific role!")
-            }
+
+
+          this.locateUser();
+
+          if (userRole == "admin") {
+            this.router.navigate(['/'], { queryParams: { role: userRole } })
+          } else if (userRole == "client") {
+            this.router.navigate(['/'], { queryParams: { role: userRole } })
+          } else {
+            console.log("User has no specific role!")
+          }
         }
 
       },

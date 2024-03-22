@@ -35,7 +35,7 @@ export class DestinationDialogComponent implements OnInit {
 
   constructor(public dialogRef: MatDialogRef<DestinationDialogComponent>, @Inject(MAT_DIALOG_DATA) public data: any,
     public destinationService: DestinationService, private notif: NotificationService,
-    private router: Router, private snackBar: MatSnackBar,private datePipe: DatePipe) { }
+    private router: Router, private snackBar: MatSnackBar, private datePipe: DatePipe) { }
 
 
   ngOnInit(): void {
@@ -76,6 +76,7 @@ export class DestinationDialogComponent implements OnInit {
   initUpdateForm(destination: Destination) {
 
 
+    
     this.addDestinationForm = new FormGroup({
       image_name: new FormControl(destination.image_name, Validators.required),
       title: new FormControl(destination.title, Validators.required),
@@ -84,11 +85,11 @@ export class DestinationDialogComponent implements OnInit {
       price: new FormControl(destination.price, Validators.required),
       discount: new FormControl(destination.discount, Validators.required),
       available_spots: new FormControl(destination.available_spots, Validators.required),
-      start_date: new FormControl(destination.start_date, Validators.required),
-      end_date: new FormControl(destination.end_date, Validators.required),
+      start_date: new FormControl(this.convertToDate(destination.start_date), Validators.required),
+      end_date: new FormControl(this.convertToDate(destination.end_date), Validators.required),
     });
 
-    console.log(destination.start_date)
+    
 
 
     const byteCharacters = atob(destination.image_data);
@@ -99,8 +100,13 @@ export class DestinationDialogComponent implements OnInit {
     const byteArray = new Uint8Array(byteNumbers);
     const blob = new Blob([byteArray], { type: 'image/png' }); // Adjust the MIME type according to your image type
 
-    // Create File object
+    
     this.coverImgFile = new File([blob], destination.image_name!, { type: 'image/png' })
+
+    this.imageSelected = true;
+    this.showImg = URL.createObjectURL(this.coverImgFile);
+    
+    this.coverImgFileName = destination.image_name!
   }
 
   closeDialog() {
@@ -123,11 +129,26 @@ export class DestinationDialogComponent implements OnInit {
   }
 
   private formatDate(date: Date): string {
-    if (!date) return ''; // Handle null or undefined values
+    if (!date) return ''; 
     const month = (date.getMonth() + 1).toString().padStart(2, '0');
     const day = date.getDate().toString().padStart(2, '0');
     const year = date.getFullYear();
     return `${month}/${day}/${year}`;
+  }
+  convertToDate(dateString: string | undefined): Date | undefined {
+    if (dateString) {
+      const parts = dateString.split('/');
+      const month = parseInt(parts[0], 10);
+      const day = parseInt(parts[1], 10);
+      const year = parseInt(parts[2], 10);
+
+     
+      const date = new Date(year, month - 1, day); 
+      return date;
+    }
+    return undefined;
+
+
   }
   onSubmit() {
 
@@ -159,7 +180,7 @@ export class DestinationDialogComponent implements OnInit {
           this.dialogRef.close();
           this.refreshEvent.emit();
 
-          
+
 
         }, error: () => {
 
