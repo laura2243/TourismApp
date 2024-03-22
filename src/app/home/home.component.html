@@ -102,19 +102,19 @@
         <div class="card-container-wrapper">
           <div class="card-container">
             <div class="card" *ngFor="let offerDestination of offerDestinations">
-              <img [src]="offerDestination.imageUrl" alt="Destination Image" >
+              <img [src]="'data:image/jpeg;base64,'+offerDestination.image_data" alt="Destination Image" >
        
 
-              <span class="sale">-40%</span>
+              <span class="sale">-{{offerDestination.discount}}%</span>
               <h2 class="info">{{ offerDestination.title }}</h2>
-              <p class="info">{{ offerDestination.description }}</p>
-              <p class="info">Date: {{ offerDestination.date }}</p>
-              <p class="info">{{ offerDestination.location }}</p>
+              <p class="info">Date: {{offerDestination.start_date}} - {{offerDestination.end_date}}</p>
+              <p class="info">Location: {{ offerDestination.location }}</p>
               <p>Price:
                 <span class="beforePrice"> ${{ offerDestination.price }} </span>
-                <span class="afterPrice"> {{'&nbsp;'}} $60 </span>
+                <span class="afterPrice"> {{'&nbsp;'}} ${{ offerDestination.price! - (offerDestination.price! * offerDestination.discount! / 100) }} </span>
               </p>
-              <p class="info">Available spots: {{ offerDestination.availableSpots }}</p>
+              <p class="info">Available spots: {{ offerDestination.available_spots }}</p>
+              <p class="info">Description: {{ offerDestination.description }}</p>
               <button>Book Now</button>
             </div>
 
@@ -160,10 +160,19 @@
             <div class="card" *ngFor="let destination of (searchedDestination ? filteredDestinations : destinations)">
 
               <img [src]="'data:image/jpeg;base64,'+destination.image_data" alt="Destination Image">
-              <h2 class="info">Title: {{ destination.title }}</h2>
+              <span  *ngIf="destination.discount !== 0" class="sale">-{{destination.discount}}%</span>
+              <h2 class="info">{{ destination.title }}</h2>
               <p class="info">Date: {{destination.start_date}} - {{destination.end_date}}</p>
               <p class="info">Location: {{ destination.location }}</p>
-              <p class="info">Price: ${{ destination.price }}</p>
+              <span [ngClass]="{'beforePrice': destination.discount > 0, 'info': destination.discount === 0}">price: ${{ destination.price }}</span>
+              <!-- Check if the discount is not equal to 0 -->
+              <ng-container *ngIf="destination.discount !== 0">
+                
+                <!-- Calculate and display the discounted price -->
+                <span class="afterPrice">
+                  &nbsp; ${{ destination.price - (destination.price * destination.discount / 100) }}
+                </span>
+              </ng-container>
               <p class="info">Available spots: {{ destination.available_spots }}</p>
               <p class="info">Description: {{ destination.description }}</p>
               

@@ -24,6 +24,7 @@ export class HomeComponent implements OnInit {
   content!: any;
   userRole!: any;
   destinations: Destination[] = [];
+  offerDestinations: Destination[] = [];
   loginForm: any;
 
   @ViewChild('scrollToOffersTarget') scrollToOffersTarget!: ElementRef<HTMLElement>;
@@ -53,11 +54,13 @@ export class HomeComponent implements OnInit {
       this.destinationService.getDestinations().subscribe(
         {
           next: (data: Destination[]) => {
+  
             this.destinations = [...data]
+            this.offerDestinations = this.destinations.filter(destination => destination.discount! > 0);
+  
             console.log(this.destinations)
           }
-        }
-      )
+        });
 
     });
   }
@@ -79,12 +82,15 @@ export class HomeComponent implements OnInit {
       this.destinationService.getDestinations().subscribe(
         {
           next: (data: Destination[]) => {
+  
             this.destinations = [...data]
+            this.offerDestinations = this.destinations.filter(destination => destination.discount! > 0);
+  
             console.log(this.destinations)
           }
         }
-      )
-      
+      );
+
     });
   }
 
@@ -94,7 +100,10 @@ export class HomeComponent implements OnInit {
     this.destinationService.getDestinations().subscribe(
       {
         next: (data: Destination[]) => {
+
           this.destinations = [...data]
+          this.offerDestinations = this.destinations.filter(destination => destination.discount! > 0);
+
           console.log(this.destinations)
         }
       }
@@ -164,57 +173,6 @@ export class HomeComponent implements OnInit {
     this.scrollToAllDestinationsFromSearch()
   }
 
-
-
-
-  offerDestinations = [
-    {
-      imageUrl: '../assets/cardPhoto.jpg',
-      title: 'Destination 1',
-      description: 'Description for destination 1.',
-      date: '12.03.2024 - 20.03.2024',
-      location: 'Location for destination 1.',
-      price: 100,
-      availableSpots: 5
-    },
-    {
-      imageUrl: '../assets/cardPhoto.jpg',
-      title: 'Destination 2',
-      description: 'Description for destination 2.',
-      date: '12.03.2024 - 20.03.2024',
-      location: 'Location for destination 1.',
-      price: 150,
-      availableSpots: 10
-    },
-    {
-      imageUrl: '../assets/cardPhoto.jpg',
-      title: 'Destination 2',
-      description: 'Description for destination 2.',
-      date: '12.03.2024 - 20.03.2024',
-      location: 'Location for destination 1.',
-      price: 150,
-      availableSpots: 10
-    },
-    {
-      imageUrl: '../assets/cardPhoto.jpg',
-      title: 'Destination 2',
-      description: 'Description for destination 2.',
-      date: '12.03.2024 - 20.03.2024',
-      location: 'Location for destination 1.',
-      price: 150,
-      availableSpots: 10
-    },
-    {
-      imageUrl: '../assets/cardPhoto.jpg',
-      title: 'Destination 2',
-      description: 'Description for destination 2.',
-      date: '12.03.2024 - 20.03.2024',
-      location: 'Location for destination 1.',
-      price: 150,
-      availableSpots: 10
-    },
-
-  ];
 
 
 
