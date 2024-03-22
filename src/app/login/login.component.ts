@@ -57,7 +57,7 @@ export class LoginComponent implements OnInit {
         const longitude = position.coords.longitude;
         const userLocation = { latitude, longitude };
 
-        localStorage.setItem('userLocation', JSON.stringify(userLocation));
+        sessionStorage.setItem('userLocation', JSON.stringify(userLocation));
 
 
         console.log('User location saved:', userLocation);
@@ -91,11 +91,12 @@ export class LoginComponent implements OnInit {
         } else {
 
 
-          this.locateUser();
+         
 
           if (userRole == "admin") {
             this.router.navigate(['/'], { queryParams: { role: userRole } })
           } else if (userRole == "client") {
+            this.locateUser();
             this.router.navigate(['/'], { queryParams: { role: userRole } })
           } else {
             console.log("User has no specific role!")

@@ -4,7 +4,7 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { filter } from 'rxjs';
 import { MatDialog } from '@angular/material/dialog';
 import { DestinationDialogComponent } from '../destination-dialog/destination-dialog.component';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Destination } from '../data-types/destination.data';
 import { DestinationService } from '../services/destination.service';
 import { DialogService } from '../services/dialog-service.service';
@@ -35,7 +35,7 @@ export class HomeComponent implements OnInit {
 
 
   constructor(private viewportScroller: ViewportScroller, public dialog: MatDialog, private route: ActivatedRoute,
-    private destinationService: DestinationService, private dialogService: DialogService) {
+    private destinationService: DestinationService, private dialogService: DialogService,private router: Router) {
   }
 
   openDialogUpdate(action: string, destination?: Destination): void {
@@ -220,7 +220,14 @@ export class HomeComponent implements OnInit {
   }
 
 
+  logOut(){
+    localStorage.removeItem('accessToken');
+    sessionStorage.clear(); 
+    localStorage.clear();
 
+
+    this.router.navigate(['/login']);
+  }
 
 
 

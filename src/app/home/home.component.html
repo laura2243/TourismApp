@@ -33,7 +33,14 @@
           </ul>
         </li>
         <li><a (click)="scrollToContact()">CONTACT</a></li>
-        <li><a href="login">SIGN IN</a></li>
+        <li><a href="login">SIGN IN</a>
+          <ul>
+            <li>
+              <a href="register">SIGN UP</a>
+            </li>
+          </ul>
+        </li>
+        <li><a (click)="logOut()">LOG OUT</a></li>
       </ul>
     </nav>
 
@@ -102,8 +109,8 @@
         <div class="card-container-wrapper">
           <div class="card-container">
             <div class="card" *ngFor="let offerDestination of offerDestinations">
-              <img [src]="'data:image/jpeg;base64,'+offerDestination.image_data" alt="Destination Image" >
-       
+              <img [src]="'data:image/jpeg;base64,'+offerDestination.image_data" alt="Destination Image">
+
 
               <span class="sale">-{{offerDestination.discount}}%</span>
               <h2 class="info">{{ offerDestination.title }}</h2>
@@ -111,7 +118,8 @@
               <p class="info">Location: {{ offerDestination.location }}</p>
               <p>Price:
                 <span class="beforePrice"> ${{ offerDestination.price }} </span>
-                <span class="afterPrice"> {{'&nbsp;'}} ${{ offerDestination.price! - (offerDestination.price! * offerDestination.discount! / 100) }} </span>
+                <span class="afterPrice"> {{'&nbsp;'}} ${{ offerDestination.price! - (offerDestination.price! *
+                  offerDestination.discount! / 100) }} </span>
               </p>
               <p class="info">Available spots: {{ offerDestination.available_spots }}</p>
               <p class="info">Description: {{ offerDestination.description }}</p>
@@ -160,14 +168,15 @@
             <div class="card" *ngFor="let destination of (searchedDestination ? filteredDestinations : destinations)">
 
               <img [src]="'data:image/jpeg;base64,'+destination.image_data" alt="Destination Image">
-              <span  *ngIf="destination.discount !== 0" class="sale">-{{destination.discount}}%</span>
+              <span *ngIf="destination.discount !== 0" class="sale">-{{destination.discount}}%</span>
               <h2 class="info">{{ destination.title }}</h2>
               <p class="info">Date: {{destination.start_date}} - {{destination.end_date}}</p>
               <p class="info">Location: {{ destination.location }}</p>
-              <span [ngClass]="{'beforePrice': destination.discount > 0, 'info': destination.discount === 0}">price: ${{ destination.price }}</span>
+              <span [ngClass]="{'beforePrice': destination.discount > 0, 'info': destination.discount === 0}">price: ${{
+                destination.price }}</span>
               <!-- Check if the discount is not equal to 0 -->
               <ng-container *ngIf="destination.discount !== 0">
-                
+
                 <!-- Calculate and display the discounted price -->
                 <span class="afterPrice">
                   &nbsp; ${{ destination.price - (destination.price * destination.discount / 100) }}
@@ -175,12 +184,13 @@
               </ng-container>
               <p class="info">Available spots: {{ destination.available_spots }}</p>
               <p class="info">Description: {{ destination.description }}</p>
-              
+
 
 
               <i *ngIf="isUserAdmin()" class="material-icons delete-icon" (click)="open(destination)">delete</i>
               <button>Book Now</button>
-              <i *ngIf="isUserAdmin()" class="material-icons edit-icon" (click)="openDialogUpdate('update',destination)">edit</i>
+              <i *ngIf="isUserAdmin()" class="material-icons edit-icon"
+                (click)="openDialogUpdate('update',destination)">edit</i>
 
 
             </div>
