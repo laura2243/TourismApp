@@ -29,7 +29,7 @@ export class LoginComponent implements OnInit {
 
   initLoginForm() {
     
-    console.log("da")
+    
     this.loginForm = new FormGroup({
       email: new FormControl('', Validators.required),
       password: new FormControl('', Validators.required),

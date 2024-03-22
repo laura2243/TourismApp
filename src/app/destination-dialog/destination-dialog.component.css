@@ -3,9 +3,9 @@
 .title {
     /* height: 50%;
     width: 100%; */
-    margin-top: 90%;
-    margin-left: 2%;
-    margin-bottom: 5%;
+    margin-top: 22%;
+    margin-left: 1%;
+    margin-bottom: 4%;
 
 }
 
@@ -14,8 +14,9 @@ h3 {
     /* margin: 3% 2% -20px; */
     font-style: italic;
     font-weight: 100;
-    font-size: 15px;
+    font-size: 23px;
     letter-spacing: 1px;
+    margin-left: 1%;
     font-family: Verdana, Geneva, Tahoma, sans-serif;
 
 }
@@ -23,16 +24,16 @@ h3 {
 h1 {
     color: #fff;
     font-family: Verdana, Geneva, Tahoma, sans-serif;
-    font-size: 50px;
+    font-size: 100px;
     letter-spacing: 5px;
-    height: 70%;
+    height: 100%;
     opacity: 0.6;
     background-image: linear-gradient(45deg, #000, #fff, #817f7f, #fff, #000);
     background-size: 100%;
     background-clip: text;
     -webkit-background-clip: text;
     color: transparent !important;
-    padding-top: 2%;
+    padding-top: 4%;
 
 
 }
@@ -41,6 +42,7 @@ h1 {
 /* ******************************************************FORM******************************************************** */
 
 .form {
+
 
     display: flex;
     flex-direction: column;
@@ -58,14 +60,17 @@ h1 {
 }
 
 .form form {
-    gap: 5%;
-    padding-top: 3%;
+
+    gap: 3%;
+    padding-top: 2%;
     color: white !important;
     display: flex;
-    flex-direction: column;
-    justify-content: space-between;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
     align-items: center;
     height: 90%;
+    
 }
 
 
@@ -84,10 +89,11 @@ h1 {
     border: none;
     border-radius: 10px;
     background-color: transparent;
-    padding-top: 3%;
     width: 20vw !important;
     height: 10vh !important;
     border-radius: 5px !important;
+    margin-left: 5%;
+    margin-right: 5%;
 }
 
 .inputImage {
@@ -96,9 +102,28 @@ h1 {
     border: none;
     border-radius: 10px;
     background-color: transparent;
-    padding-top: 3%;
-  
     border-radius: 5px !important;
+    width: 20vw;
+    height: 40vh;
+    margin-right: 10%;
+
+}
+
+.inputDescription {
+    cursor: pointer;
+    color: white !important;
+    border: none;
+    border-radius: 10px;
+    background-color: transparent;
+    border-radius: 5px !important;
+    width: 20vw;
+    height: 40vh;
+    margin-left: 10%;
+}
+
+textarea{
+    width: 20vw;
+    height: 35vh;
 }
 
 mat-dialog-actions button {
@@ -118,6 +143,7 @@ mat-dialog-actions button {
     margin-bottom: 2%;
     box-shadow: 0 1px 8px rgba(36, 125, 72, 0.8);
     margin-top: 5%;
+    
 
 
 }
@@ -139,7 +165,12 @@ form button {
     width: 20vw;
     margin-bottom: 2%;
     box-shadow: 0 1px 8px rgba(36, 125, 72, 0.8);
-    margin-top: 5%;
+    /* margin-top: 5%; */
+    margin-bottom: 5%;
+    justify-self: center;
+    align-self: center;
+    margin-left: 10%;
+    margin-right: 10%;
 
 
 }
@@ -152,6 +183,7 @@ button:hover {
 ::ng-deep .transparent-dialog .mat-dialog-container {
     background-color: rgba(0, 0, 0, 0.2) !important;
     border-radius: 10px;
+
 }
 
 ::ng-deep .mat-mdc-dialog-container .mdc-dialog__surface {
@@ -164,13 +196,24 @@ button:hover {
     background-color: rgba(0, 0, 0, .5);
     margin-top: 30% !important;
 
+
+
 }
+
+
 
 ::ng-deep .mat-mdc-dialog-container .mdc-dialog__surface::-webkit-scrollbar {
     display: none;
 }
-::ng-deep .mat-dialog-container::-webkit-scrollbar {
+
+::ng-deep .mat-mdc-dialog-content::-webkit-scrollbar {
     display: none;
+}
+
+::ng-deep .mat-mdc-dialog-content {
+    max-width: none !important;
+    max-height: none !important;
+
 }
 
 
@@ -188,19 +231,19 @@ mat-dialog-actions {
     width: 80%;
 }
 
-.image{
-    width: 20vw !important;
+.image {
+    max-width: 15vw !important;
+    max-height: 35vh;
     cursor: pointer;
     color: white !important;
     border: none;
     border-radius: 10px;
     background-color: transparent;
-    padding-top: 3%;
-  
+    /* padding-top: 3%; */
     border-radius: 5px !important;
 }
 
-.imageContainer{
+.imageContainer {
     display: flex;
     flex-direction: column;
 }

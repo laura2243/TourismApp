@@ -2,29 +2,20 @@
 
 
 
+    <div class="title">
+        <h3>{{titleText}}</h3>
+        <h1>DESTINATION</h1>
+    </div>
+
     <div class="formWrapper">
 
 
-        <div class="title">
-            <h3>Add a new</h3>
-            <h1>DESTINATION</h1>
-        </div>
 
-        <form [formGroup]="addDestinationForm" class="ng-pristine ng-invalid ng-touched" (ngSubmit)="onSubmit()" >
 
-            <div class="imageContainer" [style.height.px]="imageSelected ? 'auto' : '56px'">
-                <mat-form-field class="input">
-                    <mat-label>Select a file</mat-label>
-                    <input matInput type="text" disabled [value]="coverImgFile || 'Choose an image'"
-                        [matTooltip]="coverImgFileName" [required]="false">
-                    <mat-icon matSuffix (click)="fileInput.click()" style="cursor: pointer">attach_file</mat-icon>
-                    <input #fileInput type="file" (change)="onFileSelected($event)" style="display: none;"
-                       
-                        >
+        <form [formGroup]="addDestinationForm" class="ng-pristine ng-invalid ng-touched" (ngSubmit)="onSubmit()">
 
-                </mat-form-field>
-                <!-- <img *ngIf="imageSelected" src={{this.showImg}} class="image"> -->
-            </div>
+
+
 
 
             <mat-form-field class="input">
@@ -37,10 +28,6 @@
                 <input matInput placeholder="Location" formControlName="location">
             </mat-form-field>
 
-            <mat-form-field class="input">
-                <mat-label>Description</mat-label>
-                <textarea matInput placeholder="Description" formControlName="description"></textarea>
-            </mat-form-field>
 
             <mat-form-field class="input">
                 <mat-label>Price per night</mat-label>
@@ -64,11 +51,49 @@
                 <input matInput type="number" placeholder="Available spots" formControlName="available_spots">
             </mat-form-field>
 
-            <button  type="submit" >Add</button>
+
+            <mat-form-field class="input">
+                <mat-label>Enter a date range</mat-label>
+                <mat-date-range-input [rangePicker]="picker">
+                  <input matStartDate placeholder="MM/DD/YYYY - ">
+                  <input matEndDate placeholder="MM/DD/YYYY">
+                </mat-date-range-input>
+                <mat-hint>MM/DD/YYYY - MM/DD/YYYY</mat-hint>
+                <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+                <mat-date-range-picker #picker></mat-date-range-picker><input matInput type="datetime" placeholder="Choose a date">
+            </mat-form-field>
+
+
+
+
+
+            <div class="imageContainer">
+                <mat-form-field class="inputImage">
+                    <mat-label>Select a file</mat-label>
+                    <input matInput type="text" disabled [value]="coverImgFile || 'Choose an image'"
+                        [matTooltip]="coverImgFileName" [required]="false">
+                    <mat-icon matSuffix (click)="fileInput.click()" style="cursor: pointer">attach_file</mat-icon>
+                    <input #fileInput type="file" (change)="onFileSelected($event)" style="display: none;">
+
+                    <img *ngIf="imageSelected" src={{this.showImg}} class="image">
+                </mat-form-field>
+
+            </div>
+
+
+            <mat-form-field class="inputDescription">
+                <mat-label>Description</mat-label>
+                <textarea matInput placeholder="Description" formControlName="description"></textarea>
+            </mat-form-field>
+
+
+
+
+            <button type="submit">{{buttonText}}</button>
 
         </form>
 
-       
+
     </div>
     <!-- <mat-dialog-actions>
         <button (click)="closeDialog()">Cancel</button>

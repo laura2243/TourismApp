@@ -168,9 +168,9 @@
 
 
 
-              <i class="material-icons delete-icon" (click)="open(destination)">delete</i>
+              <i *ngIf="isUserAdmin()" class="material-icons delete-icon" (click)="open(destination)">delete</i>
               <button>Book Now</button>
-              <i class="material-icons edit-icon" (click)="openDialog('update',destination)">edit</i>
+              <i *ngIf="isUserAdmin()" class="material-icons edit-icon" (click)="openDialog('update',destination)">edit</i>
 
 
             </div>

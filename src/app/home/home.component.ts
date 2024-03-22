@@ -39,11 +39,11 @@ export class HomeComponent implements OnInit {
 
   openDialog(action: string, destination?: Destination): void {
     const dialogRef = this.dialog.open(DestinationDialogComponent, {
-      width: '60%',
-      height: '70%',
-      panelClass: 'transparent-dialog', 
+      width: '80vw',
+      height: '90vh',
+      panelClass: 'transparent-dialog',
       data: {
-        action: action, 
+        action: action,
         destination: destination
       }
     });
@@ -185,8 +185,6 @@ export class HomeComponent implements OnInit {
 
 
   open(destination: Destination) {
-
-
     let dialogRef = this.openDialogDeleteUser("Are you sure you want to delete this device?", false, true, false, destination)
   }
 
@@ -221,7 +219,7 @@ export class HomeComponent implements OnInit {
     );
   }
 
-  
+
 
 
 

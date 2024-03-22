@@ -22,6 +22,8 @@ export class DestinationDialogComponent implements OnInit {
   addDestinationForm!: FormGroup;
   toUpdateDestination !: Destination;
   image_name !: any;
+  buttonText !: string;
+  titleText !: string;
 
   constructor(public dialogRef: MatDialogRef<DestinationDialogComponent>, @Inject(MAT_DIALOG_DATA) public data: any,
     public destinationService: DestinationService, private notif: NotificationService,
@@ -32,11 +34,15 @@ export class DestinationDialogComponent implements OnInit {
 
     if (this.data.action === 'add') {
       this.initForm();
+      this.buttonText = 'Add';
+      this.titleText = 'Add a new';
+
     }
     else if (this.data.action === 'update') {
 
       this.initUpdateForm(this.data.destination);
-      
+      this.buttonText = 'Update';
+      this.titleText = 'Update an existing';
     }
 
   }
@@ -132,12 +138,9 @@ export class DestinationDialogComponent implements OnInit {
 
       this.destinationService.addDestination(destination, this.coverImgFile).subscribe({
         next: () => {
-
-
           this.snackBar.open('Destination successfully added', 'Close', {
             duration: 5000,
           });
-
 
         }, error: () => {
 
