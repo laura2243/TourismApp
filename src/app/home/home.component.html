@@ -33,7 +33,7 @@
           </ul>
         </li>
         <li><a (click)="scrollToContact()">CONTACT</a></li>
-        <li><a href="login">SIGN IN</a>
+        <li  *ngIf ="!loggedUser" ><a href="login">SIGN IN</a>
           <ul>
             <li>
               <a href="register">SIGN UP</a>
@@ -41,6 +41,7 @@
           </ul>
         </li>
         <li><a (click)="logOut()">LOG OUT</a></li>
+        
       </ul>
     </nav>
 

@@ -9,6 +9,7 @@ import { Destination } from '../data-types/destination.data';
 import { DestinationService } from '../services/destination.service';
 import { DialogService } from '../services/dialog-service.service';
 import { DialogBoxComponent } from '../dialog-box/dialog-box.component';
+import { User } from '../data-types/user.data';
 
 
 @Component({
@@ -26,6 +27,9 @@ export class HomeComponent implements OnInit {
   destinations: Destination[] = [];
   offerDestinations: Destination[] = [];
   loginForm: any;
+  loggedUser: boolean = false;
+  currentUserName: string = '';
+
 
   @ViewChild('scrollToOffersTarget') scrollToOffersTarget!: ElementRef<HTMLElement>;
   @ViewChild('scrollToAllDestinationsTarget') scrollToAllDestinationsTarget!: ElementRef<HTMLElement>;
@@ -35,7 +39,7 @@ export class HomeComponent implements OnInit {
 
 
   constructor(private viewportScroller: ViewportScroller, public dialog: MatDialog, private route: ActivatedRoute,
-    private destinationService: DestinationService, private dialogService: DialogService,private router: Router) {
+    private destinationService: DestinationService, private dialogService: DialogService, private router: Router) {
   }
 
   openDialogUpdate(action: string, destination?: Destination): void {
@@ -54,10 +58,10 @@ export class HomeComponent implements OnInit {
       this.destinationService.getDestinations().subscribe(
         {
           next: (data: Destination[]) => {
-  
+
             this.destinations = [...data]
             this.offerDestinations = this.destinations.filter(destination => destination.discount! > 0);
-  
+
             console.log(this.destinations)
           }
         });
@@ -82,10 +86,10 @@ export class HomeComponent implements OnInit {
       this.destinationService.getDestinations().subscribe(
         {
           next: (data: Destination[]) => {
-  
+
             this.destinations = [...data]
             this.offerDestinations = this.destinations.filter(destination => destination.discount! > 0);
-  
+
             console.log(this.destinations)
           }
         }
@@ -97,6 +101,18 @@ export class HomeComponent implements OnInit {
 
 
   ngOnInit(): void {
+
+    var currentUser = sessionStorage.getItem('currentUser');
+    if (currentUser) {
+
+      this.loggedUser = true;
+      var currentUserObject = JSON.parse(currentUser);
+      this.currentUserName = currentUserObject.user.name.toUpperCase();
+    }
+
+
+
+
     this.destinationService.getDestinations().subscribe(
       {
         next: (data: Destination[]) => {
@@ -177,7 +193,7 @@ export class HomeComponent implements OnInit {
 
 
   open(destination: Destination) {
-    let dialogRef = this.openDialogDeleteUser("Are you sure you want to delete this device?", false, true, false, destination)
+    let dialogRef = this.openDialogDeleteUser("Are you sure you want to delete this destination?", false, true, false, destination)
   }
 
   openDialogDeleteUser(modalText: string, onLogout: boolean, onDeleteUser: boolean, onPasswordChange: boolean, destination: Destination): any {
@@ -220,9 +236,9 @@ export class HomeComponent implements OnInit {
   }
 
 
-  logOut(){
+  logOut() {
     localStorage.removeItem('accessToken');
-    sessionStorage.clear(); 
+    sessionStorage.clear();
     localStorage.clear();
 
 

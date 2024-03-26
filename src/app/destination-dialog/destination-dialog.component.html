@@ -31,7 +31,10 @@
 
             <mat-form-field class="input">
                 <mat-label>Price per night</mat-label>
-                <input matInput type="number" placeholder="Price per night" formControlName="price">
+                <input matInput type="number" min="0" placeholder="Price per night" formControlName="price">
+                <mat-error *ngIf="addDestinationForm.get('price')?.hasError('min')">
+                    Price cannot be negative
+                </mat-error>
             </mat-form-field>
 
             <mat-form-field class="input">
@@ -42,25 +45,35 @@
                     <mat-option value="10">10%</mat-option>
                 
                 </mat-select> -->
-                <input matInput type="number" placeholder="Discount" formControlName="discount">
-
+                <input matInput type="number" min="0" placeholder="Discount" formControlName="discount">
+                <mat-error *ngIf="addDestinationForm.get('discount')?.hasError('min')">
+                    Discount cannot be negative
+                </mat-error>
             </mat-form-field>
 
             <mat-form-field class="input">
                 <mat-label>Available spots</mat-label>
-                <input matInput type="number" placeholder="Available spots" formControlName="available_spots">
+                <input matInput type="number" min="0" placeholder="Available spots" formControlName="available_spots">
+                <mat-error *ngIf="addDestinationForm.get('available_spots')?.hasError('min')">
+                    Available spots cannot be negative
+                </mat-error>
             </mat-form-field>
 
 
             <mat-form-field class="input">
-                <!-- <mat-label>Enter a date range</mat-label> -->
+                <mat-label>Enter a date range</mat-label>
                 <mat-date-range-input [rangePicker]="picker">
-                  <input matStartDate placeholder="MM/DD/YYYY - " formControlName="start_date" >
-                  <input matEndDate placeholder="MM/DD/YYYY" formControlName="end_date">
+                    <input matStartDate placeholder="MM/DD/YYYY - " formControlName="start_date">
+                    <input matEndDate placeholder="MM/DD/YYYY" formControlName="end_date">
                 </mat-date-range-input>
-                <mat-hint>MM/DD/YYYY - MM/DD/YYYY</mat-hint>
+                <!-- <mat-hint>MM/DD/YYYY - MM/DD/YYYY</mat-hint> -->
                 <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
-                <mat-date-range-picker #picker></mat-date-range-picker><input matInput type="datetime" placeholder="Choose a date">
+                <mat-date-range-picker #picker></mat-date-range-picker><input matInput type="datetime"
+                    placeholder="Choose a date">
+
+                <mat-error *ngIf="addDestinationForm.hasError('dateTimeComparison')">
+                    End date must be later or equal to start date
+                </mat-error>
             </mat-form-field>
 
 
@@ -89,7 +102,7 @@
 
 
 
-            <button type="submit" >{{buttonText}}</button>
+            <button type="submit" [disabled]='addDestinationForm.invalid'>{{buttonText}}</button>
 
         </form>
 

@@ -958,3 +958,17 @@ ul li:hover>.submenu {
 .edit-icon:hover {
   color: rgb(36, 125, 72);
 }
+
+
+
+.mdc-line-ripple::before {
+  color: white !important;
+}
+
+.mdc-text-field--filled:not(.mdc-text-field--disabled) .mdc-line-ripple::before,
+.mdc-text-field--filled:not(.mdc-text-field--disabled) .mdc-line-ripple::after,
+.mdc-text-field--filled .mdc-line-ripple::before,
+.mdc-text-field--filled .mdc-line-ripple::after {
+  border-bottom: 2px solid white !important;
+  border-radius: 10px !important;
+}

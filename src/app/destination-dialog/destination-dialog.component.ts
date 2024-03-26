@@ -1,5 +1,5 @@
 import { Component, Inject, OnInit } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { AbstractControl, FormControl, FormGroup, ValidatorFn, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { Destination } from '../data-types/destination.data';
 import { DestinationService } from '../services/destination.service';
@@ -60,7 +60,7 @@ export class DestinationDialogComponent implements OnInit {
 
   initForm() {
     this.addDestinationForm = new FormGroup({
-      image_name: new FormControl('', Validators.required),
+      image_name: new FormControl(''),
       title: new FormControl('', Validators.required),
       location: new FormControl('', Validators.required),
       description: new FormControl('', Validators.required),
@@ -76,20 +76,20 @@ export class DestinationDialogComponent implements OnInit {
   initUpdateForm(destination: Destination) {
 
 
-    
+
     this.addDestinationForm = new FormGroup({
-      image_name: new FormControl(destination.image_name, Validators.required),
+      image_name: new FormControl(destination.image_name),
       title: new FormControl(destination.title, Validators.required),
       location: new FormControl(destination.location, Validators.required),
       description: new FormControl(destination.description, Validators.required),
-      price: new FormControl(destination.price, Validators.required),
-      discount: new FormControl(destination.discount, Validators.required),
-      available_spots: new FormControl(destination.available_spots, Validators.required),
+      price: new FormControl(destination.price, [Validators.required, Validators.min(0)]),
+      discount: new FormControl(destination.discount, [Validators.required, Validators.min(0)]),
+      available_spots: new FormControl(destination.available_spots, [Validators.required, Validators.min(0)]),
       start_date: new FormControl(this.convertToDate(destination.start_date), Validators.required),
       end_date: new FormControl(this.convertToDate(destination.end_date), Validators.required),
-    });
+    }, { validators: this.dateTimeComparisonValidator() });
 
-    
+
 
 
     const byteCharacters = atob(destination.image_data);
@@ -100,17 +100,39 @@ export class DestinationDialogComponent implements OnInit {
     const byteArray = new Uint8Array(byteNumbers);
     const blob = new Blob([byteArray], { type: 'image/png' }); // Adjust the MIME type according to your image type
 
-    
+
     this.coverImgFile = new File([blob], destination.image_name!, { type: 'image/png' })
 
     this.imageSelected = true;
     this.showImg = URL.createObjectURL(this.coverImgFile);
-    
+
+    console.log(destination)
     this.coverImgFileName = destination.image_name!
+  }
+
+  dateTimeComparisonValidator(): ValidatorFn {
+    return (control: AbstractControl): { [key: string]: any } | null => {
+      const startDateTime = control.get('start_date')?.value;
+      const endDateTime = control.get('end_date')?.value;
+
+      if (startDateTime && endDateTime && startDateTime > endDateTime ) {
+        return { dateTimeComparison: true };
+      }
+
+      return null;
+    };
   }
 
   closeDialog() {
     this.dialogRef.close();
+  }
+
+  nonNegativeValidator(control: AbstractControl) {
+    const value = control.value;
+    if (value < 0) {
+      return { 'negative': true };
+    }
+    return null;
   }
 
 
@@ -129,7 +151,7 @@ export class DestinationDialogComponent implements OnInit {
   }
 
   private formatDate(date: Date): string {
-    if (!date) return ''; 
+    if (!date) return '';
     const month = (date.getMonth() + 1).toString().padStart(2, '0');
     const day = date.getDate().toString().padStart(2, '0');
     const year = date.getFullYear();
@@ -142,8 +164,8 @@ export class DestinationDialogComponent implements OnInit {
       const day = parseInt(parts[1], 10);
       const year = parseInt(parts[2], 10);
 
-     
-      const date = new Date(year, month - 1, day); 
+
+      const date = new Date(year, month - 1, day);
       return date;
     }
     return undefined;
@@ -197,6 +219,7 @@ export class DestinationDialogComponent implements OnInit {
       destination.id = this.data.destination.id;
       console.log(destination)
       this.destinationService.updateDestination(destination, this.coverImgFile).subscribe({
+
         next: () => {
 
 

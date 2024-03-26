@@ -73,7 +73,7 @@ export class RegisterComponent {
             this.snackBar.open('User registered successfully!', 'Close', {
               duration: 7000,
             });
-            this.router.navigate(['']);
+            this.router.navigate(['/login']);
           }
 
 
@@ -81,7 +81,7 @@ export class RegisterComponent {
 
         }, error: () => {
 
-
+          this.notif.showPopupMessage("Email already exists!", "OK")
           console.debug;
         }
       }
