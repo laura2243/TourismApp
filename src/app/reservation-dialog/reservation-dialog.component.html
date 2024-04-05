@@ -20,16 +20,33 @@
             <div class="reservationInfo">
 
 
-                <p>{{this.data.destination.title}}</p>
+                <h2 style="margin-bottom: 5%; text-align: center; margin-right: 5%;">{{this.data.destination.title}}
+                </h2>
 
-                <p>About</p>
-                <p style="margin-left: 3%;">{{this.data.destination.description}}</p>
+                <p>• About</p>
+                <p style="margin-bottom: 5%;margin-left: 5%;">{{this.data.destination.description}}</p>
 
-                <p>Where?</p>
-                <p style="margin-left: 3%;">St Moritz</p>
-                
-                <p>When?</p>
-                <p style="margin-left: 3%;">10.02.2023-11.02.2023</p>
+                <p>• Where?</p>
+                <p style="margin-bottom: 5%; margin-left: 5%;">St Moritz</p>
+
+                <p style="margin-bottom: 2%;">• When?</p>
+                <mat-form-field class="datePicker" appearance="outline">
+                    <mat-label>Enter a date range</mat-label>
+                    <mat-date-range-input [rangePicker]="picker">
+                        <input matStartDate placeholder="MM/DD/YYYY " (dateChange)="startDatePicker.next($event)">
+                        <input matEndDate placeholder="MM/DD/YYYY" (dateChange)="endDatePicker.next($event)">
+                    </mat-date-range-input>
+                    <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+                    <mat-date-range-picker #picker></mat-date-range-picker>
+                </mat-form-field>
+
+
+                <div class="text-center mt-3 " *ngIf='validDate'>
+                    <p class="alertLabel">Choose a valid date*</p>
+                </div>
+
+
+
 
             </div>
 
@@ -47,11 +64,10 @@
 
 
             <mat-form-field class="input">
-                <mat-label *ngIf="!makeReservationForm.get('selected_spots')?.value">The price will be calculated after
-                    you choose the number of spots. </mat-label>
-                <mat-label *ngIf="makeReservationForm.get('selected_spots')?.value">Total Price </mat-label>
+                <mat-label *ngIf="makeReservationForm.get('selected_spots')?.value == ''">Total Price </mat-label>
+                <!-- <mat-label *ngIf="makeReservationForm.get('selected_spots')?.value">Total Price </mat-label> -->
 
-                <input matInput placeholder=" " formControlName="price" [disabled]="true">
+                <input matInput placeholder="Total Price" formControlName="price" >
 
             </mat-form-field>
 
@@ -70,35 +86,8 @@
             </mat-form-field>
 
 
-            <!-- 
-            <mat-form-field class="input">
-                <mat-label>Enter a date range</mat-label>
-                <mat-date-range-input [rangePicker]="picker">
-                    <input matStartDate placeholder="MM/DD/YYYY - " formControlName="start_date">
-                    <input matEndDate placeholder="MM/DD/YYYY" formControlName="end_date">
-                </mat-date-range-input>
-               
-                <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
-                <mat-date-range-picker #picker></mat-date-range-picker><input matInput type="datetime"
-                    placeholder="Choose a date">
 
-                <mat-error *ngIf="makeReservationForm.hasError('dateTimeComparison')">
-                    End date must be later or equal to start date
-                </mat-error>
-            </mat-form-field> -->
-
-
-
-
-
-
-
-
-
-
-
-
-            <button type="submit" [disabled]='makeReservationForm.invalid'>Book now</button>
+            <button type="submit" >Book now</button>
 
         </form>
 

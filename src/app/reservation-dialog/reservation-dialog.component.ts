@@ -10,7 +10,7 @@ import { DatePipe, NgFor, NgIf } from '@angular/common';
 import { EventEmitter } from '@angular/core';
 import { MatLabel } from '@angular/material/form-field';
 import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatDatepickerInputEvent, MatDatepickerModule } from '@angular/material/datepicker';
 import { MatCardModule } from '@angular/material/card';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
@@ -20,6 +20,9 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatOptgroup, MatOption } from '@angular/material/core';
 import { MatSelectModule } from '@angular/material/select';
+import { Subject, combineLatest, map } from 'rxjs';
+import { Reservation } from '../data-types/reservation.data';
+import { ReservationService } from '../services/reservation.service';
 
 @Component({
   selector: 'app-reservation-dialog',
@@ -44,22 +47,43 @@ export class ReservationDialogComponent {
   spots!: number[];
   total_price!: number;
 
+  startDatePicker = new Subject<MatDatepickerInputEvent<any>>();
+  endDatePicker = new Subject<MatDatepickerInputEvent<any>>();
+
+  startDate: any;
+  endDate: any;
+
+  validDate: boolean = false;
+
 
 
   constructor(public dialogRef: MatDialogRef<ReservationDialogComponent>, @Inject(MAT_DIALOG_DATA) public data: any,
     public destinationService: DestinationService, private notif: NotificationService,
-    private router: Router, private snackBar: MatSnackBar, private datePipe: DatePipe) { }
+    private router: Router, private snackBar: MatSnackBar, private datePipe: DatePipe, public reservationService: ReservationService) { }
 
 
   ngOnInit(): void {
 
 
+    //date picker
+    const dateChange$ = combineLatest([this.startDatePicker, this.endDatePicker]).pipe(
+      map(([a$, b$]) => ({
+        start: a$,
+        end: b$
+      }))
+    );
+
+    dateChange$.subscribe((data) => {
+      if (data.start.value && data.end.value) {
+        this.startDate = data.start.value
+        this.endDate = data.end.value
+        this.filterDestinationsByDateRange(data.start.value, data.end.value);
+      }
+    });
+
+
     this.initForm(this.data.destination)
-
-
   }
-
-
 
 
   generateSpotsArray(availableSpots: number): number[] {
@@ -67,11 +91,9 @@ export class ReservationDialogComponent {
   }
   initForm(destination: Destination) {
     this.makeReservationForm = new FormGroup({
-      image_name: new FormControl(''),
-      title: new FormControl(destination.title, Validators.required),
-      location: new FormControl('', Validators.required),
+
       description: new FormControl(destination.description, Validators.required),
-      price: new FormControl('', Validators.required),
+      price: new FormControl({ value: '', disabled: true }, Validators.required),
       selected_spots: new FormControl('', Validators.required),
       start_date: new FormControl('', Validators.required),
       end_date: new FormControl('', Validators.required),
@@ -83,166 +105,192 @@ export class ReservationDialogComponent {
     // Subscribe to changes in the selected_spot control
     this.makeReservationForm.get('selected_spots')?.valueChanges.subscribe((selectedSpot: number) => {
       if (selectedSpot !== null && !isNaN(selectedSpot)) {
-        console.log(this.data.destination?.discount)
-        if (this.data.destination?.discount != 0) { 
-          
-        var priceWithDiscount = this.data.destination?.price - (this.data.destination?.price * this.data.destination?.discount / 100)
-        console.log(priceWithDiscount)
-        this.total_price = (priceWithDiscount || 0) * selectedSpot;
-      } else {
-        this.total_price = (this.data.destination?.price || 0) * selectedSpot;
-      }
+        
+        if (this.data.destination?.discount != 0) {
+
+          var priceWithDiscount = this.data.destination?.price - (this.data.destination?.price * this.data.destination?.discount / 100)
       
-      this.makeReservationForm.patchValue({ price: this.total_price });
-    }
+          this.total_price = (priceWithDiscount || 0) * selectedSpot;
+        } else {
+          this.total_price = (this.data.destination?.price || 0) * selectedSpot;
+        }
+
+        this.makeReservationForm.patchValue({ price: this.total_price });
+      }
     });
 
-  const byteCharacters = atob(destination.image_data);
-  const byteNumbers = new Array(byteCharacters.length);
-  for(let i = 0; i <byteCharacters.length; i++) {
-  byteNumbers[i] = byteCharacters.charCodeAt(i);
-}
-const byteArray = new Uint8Array(byteNumbers);
-const blob = new Blob([byteArray], { type: 'image/png' }); // Adjust the MIME type according to your image type
+    const byteCharacters = atob(destination.image_data);
+    const byteNumbers = new Array(byteCharacters.length);
+    for (let i = 0; i < byteCharacters.length; i++) {
+      byteNumbers[i] = byteCharacters.charCodeAt(i);
+    }
+    const byteArray = new Uint8Array(byteNumbers);
+    const blob = new Blob([byteArray], { type: 'image/png' }); // Adjust the MIME type according to your image type
 
 
-this.coverImgFile = new File([blob], destination.image_name!, { type: 'image/png' })
+    this.coverImgFile = new File([blob], destination.image_name!, { type: 'image/png' })
 
-this.imageSelected = true;
-this.showImg = URL.createObjectURL(this.coverImgFile);
+    this.imageSelected = true;
+    this.showImg = URL.createObjectURL(this.coverImgFile);
 
-console.log(destination)
-this.coverImgFileName = destination.image_name!
+  
+    this.coverImgFileName = destination.image_name!
   }
 
 
 
 
-dateTimeComparisonValidator(): ValidatorFn {
-  return (control: AbstractControl): { [key: string]: any } | null => {
-    const startDateTime = control.get('start_date')?.value;
-    const endDateTime = control.get('end_date')?.value;
+  dateTimeComparisonValidator(): ValidatorFn {
+    return (control: AbstractControl): { [key: string]: any } | null => {
+      const startDateTime = control.get('start_date')?.value;
+      const endDateTime = control.get('end_date')?.value;
 
-    if (startDateTime && endDateTime && startDateTime > endDateTime) {
-      return { dateTimeComparison: true };
+      if (startDateTime && endDateTime && startDateTime > endDateTime) {
+        return { dateTimeComparison: true };
+      }
+
+      return null;
+    };
+  }
+
+  closeDialog() {
+    this.dialogRef.close();
+  }
+
+
+
+
+  showImg!: any;
+  coverImgFile!: File;
+  coverImgFileName!: string;
+  imageSelected: boolean = false;
+
+  onFileSelected(event: any) {
+
+
+    this.coverImgFile = event.target.files[0];
+    this.coverImgFileName = this.coverImgFile.name;
+    this.imageSelected = true;
+    this.showImg = URL.createObjectURL(event.target.files[0]);
+  }
+
+  private formatDate(date: Date = new Date(), format: string = 'MM/DD/YYYY'): string {
+    if (!date) return '';
+    const month = (date.getMonth() + 1).toString().padStart(2, '0');
+    const day = date.getDate().toString().padStart(2, '0');
+    const year = date.getFullYear();
+
+    let formattedDate: string;
+
+    switch (format) {
+      case 'MM/DD/YYYY':
+        formattedDate = `${month}/${day}/${year}`;
+        break;
+      case 'YYYY-MM-DD':
+        formattedDate = `${year}-${month}-${day}`;
+        break;
+      // Add more cases for additional formats if needed
+      default:
+        formattedDate = `${month}/${day}/${year}`;
+        break;
     }
 
-    return null;
-  };
-}
-
-closeDialog() {
-  this.dialogRef.close();
-}
-
-
-
-
-showImg!: any;
-coverImgFile!: File;
-coverImgFileName!: string;
-imageSelected: boolean = false;
-
-onFileSelected(event: any) {
-
-
-  this.coverImgFile = event.target.files[0];
-  this.coverImgFileName = this.coverImgFile.name;
-  this.imageSelected = true;
-  this.showImg = URL.createObjectURL(event.target.files[0]);
-}
-
-  private formatDate(date: Date): string {
-  if (!date) return '';
-  const month = (date.getMonth() + 1).toString().padStart(2, '0');
-  const day = date.getDate().toString().padStart(2, '0');
-  const year = date.getFullYear();
-  return `${month}/${day}/${year}`;
-}
-convertToDate(dateString: string | undefined): Date | undefined {
-  if (dateString) {
-    const parts = dateString.split('/');
-    const month = parseInt(parts[0], 10);
-    const day = parseInt(parts[1], 10);
-    const year = parseInt(parts[2], 10);
-
-
-    const date = new Date(year, month - 1, day);
-    return date;
+    return formattedDate;
   }
-  return undefined;
+
+  convertToDate(dateString: string | undefined): Date | undefined {
+    if (dateString) {
+      const parts = dateString.split('/');
+      const month = parseInt(parts[0], 10);
+      const day = parseInt(parts[1], 10);
+      const year = parseInt(parts[2], 10);
 
 
-}
-onSubmit() {
+      const date = new Date(year, month - 1, day);
+      return date;
+    }
+    return undefined;
 
 
-  // const destination: Destination = {
-
-  //   title: this.addDestinationForm.get('title')?.value,
-  //   location: this.addDestinationForm.get('location')?.value,
-  //   description: this.addDestinationForm.get('description')?.value,
-  //   price: this.addDestinationForm.get('price')?.value,
-  //   discount: this.addDestinationForm.get('discount')?.value,
-  //   available_spots: this.addDestinationForm.get('available_spots')?.value,
-  //   start_date: this.formatDate(this.addDestinationForm.get('start_date')?.value),
-  //   end_date: this.formatDate(this.addDestinationForm.get('end_date')?.value)
-  // };
-
+  }
 
 
 
-  //   if (this.data.action === 'add') {
+  // filter destinations based on the selected date range
+  filterDestinationsByDateRange(startDate: any, endDate: any) {
 
 
-  //     this.destinationService.addDestination(destination, this.coverImgFile).subscribe({
-  //       next: () => {
-  //         this.snackBar.open('Destination successfully added', 'Close', {
-  //           duration: 5000,
-  //         });
+    if (startDate && endDate) {
+      // Set time to midnight for both start and end dates
+      startDate.setHours(0, 0, 0, 0);
+      endDate.setHours(0, 0, 0, 0);
 
-  //         this.dialogRef.close();
-  //         this.refreshEvent.emit();
+      // Create date objects for destination start and end dates
+      const destinationStartDate = new Date(this.data.destination.start_date);
+      const destinationEndDate = new Date(this.data.destination.end_date);
 
+      // Set time to midnight for destination start and end dates
+      destinationStartDate.setHours(0, 0, 0, 0);
+      destinationEndDate.setHours(0, 0, 0, 0);
 
+      this.validDate = !(destinationStartDate.getTime() <= startDate.getTime() &&
+        destinationEndDate.getTime() >= endDate.getTime());
+    }
 
-  //       }, error: () => {
-
-  //         this.notif.showPopupMessage("Couldn't add destination!", "OK")
-  //         this.dialogRef.close();
-  //         console.debug;
-  //       }
-
-  //     }
-
-  //     );
-  //   } else if (this.data.action === 'update') {
-
-  //     destination.id = this.data.destination.id;
-  //     console.log(destination)
-  //     this.destinationService.updateDestination(destination, this.coverImgFile).subscribe({
-
-  //       next: () => {
+  }
 
 
-  //         this.snackBar.open('Destination successfully updated', 'Close', {
-  //           duration: 5000,
-  //         });
-  //         this.dialogRef.close();
 
 
-  //       }, error: () => {
+  onSubmit() {
 
-  //         this.notif.showPopupMessage("Couldn't update destination!", "OK")
-  //         console.debug;
-  //         this.dialogRef.close();
-  //       }
-  //     }
+   
+    
 
-  //     );
+    var currentUser = sessionStorage.getItem('currentUser');
+    var currentUserId;
+    if (currentUser) {
 
 
-  //   }
-}
+      var currentUserObject = JSON.parse(currentUser);
+      currentUserId = currentUserObject.user.id;
+    }
+
+    const reservation: Reservation = {
+
+      destination_id: this.data.destination.id,
+      user_id: currentUserId,
+      reservation_date: this.formatDate(),
+      start_date: this.formatDate(this.startDate),
+      end_date: this.formatDate(this.endDate),
+      total_price: this.total_price,
+      nr_spots: this.makeReservationForm.get('selected_spots')?.value
+    }
+
+    this.reservationService.addReservation(reservation).subscribe({
+      next: () => {
+        this.snackBar.open('Reservation successfully added', 'Close', {
+          duration: 5000,
+        });
+
+        this.dialogRef.close();
+        this.refreshEvent.emit();
+
+
+
+      }, error: () => {
+
+        this.notif.showPopupMessage("Couldn't add reservation!", "OK")
+        this.dialogRef.close();
+        console.debug;
+      }
+
+    }
+
+    );
+
+  
+
+  }
 
 }
