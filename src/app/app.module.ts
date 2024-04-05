@@ -23,7 +23,7 @@ import { NotificationService } from './services/notification.service';
 import { DialogBoxComponent } from './dialog-box/dialog-box.component';
 import {MatIconModule} from '@angular/material/icon';
 import {MatTooltipModule} from '@angular/material/tooltip';
-import { DatePipe } from '@angular/common';
+import { CommonModule, DatePipe, TitleCasePipe } from '@angular/common';
 import { CustomDateFormatPipe } from './services/date-format.service';
 
 
@@ -35,7 +35,8 @@ import { CustomDateFormatPipe } from './services/date-format.service';
     RegisterComponent,
     DestinationDialogComponent,
     DialogBoxComponent,
-    CustomDateFormatPipe
+    CustomDateFormatPipe,
+    
 
   ],
   imports: [
@@ -52,7 +53,9 @@ import { CustomDateFormatPipe } from './services/date-format.service';
     FormsModule,
     ReactiveFormsModule,
     MatDialogModule,
-    MatSelectModule
+    MatSelectModule,
+    TitleCasePipe,
+    CommonModule
   ],
   providers: [
     // {
@@ -60,9 +63,10 @@ import { CustomDateFormatPipe } from './services/date-format.service';
     //   useClass: HttpInterceptorService,
     //   multi: true
     // },
-    provideNativeDateAdapter(),provideAnimations(), NotificationService,DatePipe
+    provideNativeDateAdapter(),provideAnimations(), NotificationService,DatePipe,TitleCasePipe
     // ,JwtServiceService
   ],
+  exports: [TitleCasePipe],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
