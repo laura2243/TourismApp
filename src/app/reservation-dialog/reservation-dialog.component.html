@@ -1,0 +1,108 @@
+<mat-dialog-content class="form">
+
+
+
+    <div class="title">
+        <h3>make a</h3>
+        <h1>RESERVATION</h1>
+    </div>
+
+    <div class="formWrapper">
+
+
+
+
+        <div class="infoWrap">
+            <img *ngIf="imageSelected" src={{this.showImg}} class="image">
+
+
+
+            <div class="reservationInfo">
+
+
+                <p>{{this.data.destination.title}}</p>
+
+                <p>About</p>
+                <p style="margin-left: 3%;">{{this.data.destination.description}}</p>
+
+                <p>Where?</p>
+                <p style="margin-left: 3%;">St Moritz</p>
+                
+                <p>When?</p>
+                <p style="margin-left: 3%;">10.02.2023-11.02.2023</p>
+
+            </div>
+
+        </div>
+
+        <form [formGroup]="makeReservationForm" class="ng-pristine ng-invalid ng-touched" (ngSubmit)="onSubmit()">
+
+
+
+
+
+
+
+
+
+
+            <mat-form-field class="input">
+                <mat-label *ngIf="!makeReservationForm.get('selected_spots')?.value">The price will be calculated after
+                    you choose the number of spots. </mat-label>
+                <mat-label *ngIf="makeReservationForm.get('selected_spots')?.value">Total Price </mat-label>
+
+                <input matInput placeholder=" " formControlName="price" [disabled]="true">
+
+            </mat-form-field>
+
+
+
+
+
+            <mat-form-field class="input">
+                <mat-label>Choose spots number</mat-label>
+                <mat-select formControlName="selected_spots">
+                    <mat-option *ngFor="let spot of spots" [value]="spot">{{ spot }}</mat-option>
+                </mat-select>
+                <mat-error *ngIf="makeReservationForm.get('selected_spots')?.hasError('required')">
+                    Please choose a spot
+                </mat-error>
+            </mat-form-field>
+
+
+            <!-- 
+            <mat-form-field class="input">
+                <mat-label>Enter a date range</mat-label>
+                <mat-date-range-input [rangePicker]="picker">
+                    <input matStartDate placeholder="MM/DD/YYYY - " formControlName="start_date">
+                    <input matEndDate placeholder="MM/DD/YYYY" formControlName="end_date">
+                </mat-date-range-input>
+               
+                <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+                <mat-date-range-picker #picker></mat-date-range-picker><input matInput type="datetime"
+                    placeholder="Choose a date">
+
+                <mat-error *ngIf="makeReservationForm.hasError('dateTimeComparison')">
+                    End date must be later or equal to start date
+                </mat-error>
+            </mat-form-field> -->
+
+
+
+
+
+
+
+
+
+
+
+
+            <button type="submit" [disabled]='makeReservationForm.invalid'>Book now</button>
+
+        </form>
+
+
+    </div>
+
+</mat-dialog-content>

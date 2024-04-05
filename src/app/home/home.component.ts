@@ -1,7 +1,7 @@
 import { ViewportScroller } from '@angular/common';
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { filter } from 'rxjs';
+import { Subject, combineLatest, filter, map } from 'rxjs';
 import { MatDialog } from '@angular/material/dialog';
 import { DestinationDialogComponent } from '../destination-dialog/destination-dialog.component';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -10,6 +10,8 @@ import { DestinationService } from '../services/destination.service';
 import { DialogService } from '../services/dialog-service.service';
 import { DialogBoxComponent } from '../dialog-box/dialog-box.component';
 import { User } from '../data-types/user.data';
+import { ReservationDialogComponent } from '../reservation-dialog/reservation-dialog.component';
+import { MatDatepickerInputEvent } from '@angular/material/datepicker';
 
 
 @Component({
@@ -29,6 +31,7 @@ export class HomeComponent implements OnInit {
   loginForm: any;
   loggedUser: boolean = false;
   currentUserName: string = '';
+  filteredDestinationsDate: any[] = [];
 
 
   @ViewChild('scrollToOffersTarget') scrollToOffersTarget!: ElementRef<HTMLElement>;
@@ -36,6 +39,11 @@ export class HomeComponent implements OnInit {
   @ViewChild('scrollToContactTarget') scrollToContactTarget!: ElementRef<HTMLElement>;
   @ViewChild('scrollToHomeTarget') scrollToHomeTarget!: ElementRef<HTMLElement>;
   @ViewChild('scrollToAboutUsTarget') scrollToAboutUsTarget!: ElementRef<HTMLElement>;
+  // matStartDate!: HTMLInputElement;
+  // matEndDate!: HTMLInputElement;
+
+  startDatePicker = new Subject<MatDatepickerInputEvent<any>>();
+  endDatePicker = new Subject<MatDatepickerInputEvent<any>>();
 
 
   constructor(private viewportScroller: ViewportScroller, public dialog: MatDialog, private route: ActivatedRoute,
@@ -98,9 +106,43 @@ export class HomeComponent implements OnInit {
     });
   }
 
+  openReservationDialog(destination?: Destination): void {
+    const dialogRef = this.dialog.open(ReservationDialogComponent, {
+      width: '80vw',
+      height: '90vh',
+      panelClass: 'transparent-dialog',
+      data: {
+
+        destination: destination
+      }
+
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('The dialog was closed', result);
+
+      //make reservation service call to save reservation
+
+    });
+  }
+
 
 
   ngOnInit(): void {
+
+    //date picker
+    const dateChange$ = combineLatest([this.startDatePicker, this.endDatePicker]).pipe(
+      map(([a$, b$]) => ({
+        start: a$,
+        end: b$
+      }))
+    );
+
+    dateChange$.subscribe((data) => {
+      if (data.start.value && data.end.value) {
+        this.filterDestinationsByDateRange(data.start.value, data.end.value);
+      }
+    });
 
     var currentUser = sessionStorage.getItem('currentUser');
     if (currentUser) {
@@ -170,6 +212,7 @@ export class HomeComponent implements OnInit {
   searchQuery: string = '';
   searchedDestination: boolean = false;
   showTextNoDestinationFound: boolean = false;
+  showTextNoDateFound: boolean = false;
 
   filterDestinations() {
     if (!this.searchQuery) {
@@ -243,6 +286,42 @@ export class HomeComponent implements OnInit {
 
 
     this.router.navigate(['/login']);
+  }
+
+
+  // filter destinations based on the selected date range
+  filterDestinationsByDateRange(startDate: any, endDate: any) {
+ 
+    if (startDate && endDate) {
+      // Set time to midnight for both start and end dates
+      startDate.setHours(0, 0, 0, 0);
+      endDate.setHours(0, 0, 0, 0);
+
+      this.filteredDestinations = this.destinations.filter(destination => {
+        if (destination.start_date && destination.end_date) {
+          // Create date objects for destination start and end dates
+          const destinationStartDate = new Date(destination.start_date);
+          const destinationEndDate = new Date(destination.end_date);
+
+          // Set time to midnight for destination start and end dates
+          destinationStartDate.setHours(0, 0, 0, 0);
+          destinationEndDate.setHours(0, 0, 0, 0);
+
+          // Compare dates without considering time zones
+          return destinationStartDate.getTime() <= startDate.getTime() &&
+            destinationEndDate.getTime() >= endDate.getTime();
+        }
+        return false;
+      });
+
+
+    }
+    this.searchedDestination = true;
+    if (this.filteredDestinations.length == 0) {
+      this.showTextNoDateFound = true;
+    } else {
+      this.showTextNoDateFound = false;
+    }
   }
 
 

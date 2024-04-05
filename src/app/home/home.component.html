@@ -33,7 +33,7 @@
           </ul>
         </li>
         <li><a (click)="scrollToContact()">CONTACT</a></li>
-        <li  *ngIf ="!loggedUser" ><a href="login">SIGN IN</a>
+        <li *ngIf="!loggedUser"><a href="login">SIGN IN</a>
           <ul>
             <li>
               <a href="register">SIGN UP</a>
@@ -41,7 +41,7 @@
           </ul>
         </li>
         <li><a (click)="logOut()">LOG OUT</a></li>
-        
+
       </ul>
     </nav>
 
@@ -124,7 +124,7 @@
               </p>
               <p class="info">Available spots: {{ offerDestination.available_spots }}</p>
               <p class="info">Description: {{ offerDestination.description }}</p>
-              <button>Book Now</button>
+              <button (click)="openReservationDialog(offerDestination)">Book Now</button>
             </div>
 
 
@@ -147,8 +147,8 @@
           <mat-form-field class="datePicker" appearance="outline">
             <mat-label>Enter a date range</mat-label>
             <mat-date-range-input [rangePicker]="picker">
-              <input matStartDate placeholder="MM/DD/YYYY - ">
-              <input matEndDate placeholder="MM/DD/YYYY">
+              <input matStartDate placeholder="MM/DD/YYYY - " (dateChange)="startDatePicker.next($event)">
+              <input matEndDate placeholder="MM/DD/YYYY" (dateChange)="endDatePicker.next($event)">
             </mat-date-range-input>
             <!-- <mat-hint>MM/DD/YYYY - MM/DD/YYYY</mat-hint> -->
             <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
@@ -189,7 +189,7 @@
 
 
               <i *ngIf="isUserAdmin()" class="material-icons delete-icon" (click)="open(destination)">delete</i>
-              <button>Book Now</button>
+              <button (click)="openReservationDialog(destination)">Book Now</button>
               <i *ngIf="isUserAdmin()" class="material-icons edit-icon"
                 (click)="openDialogUpdate('update',destination)">edit</i>
 
@@ -203,6 +203,10 @@
           <h1>{{ searchQuery }}</h1>
 
 
+        </div>
+
+        <div class="noDestinationsFound" *ngIf="showTextNoDateFound">
+          <h3> No destinations Available this date </h3>
         </div>
 
       </div>
