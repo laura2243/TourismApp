@@ -25,6 +25,7 @@ import {MatIconModule} from '@angular/material/icon';
 import {MatTooltipModule} from '@angular/material/tooltip';
 import { CommonModule, DatePipe, TitleCasePipe } from '@angular/common';
 import { CustomDateFormatPipe } from './services/date-format.service';
+import { NgApexchartsModule } from 'ng-apexcharts';
 
 
 @NgModule({
@@ -55,7 +56,8 @@ import { CustomDateFormatPipe } from './services/date-format.service';
     MatDialogModule,
     MatSelectModule,
     TitleCasePipe,
-    CommonModule
+    CommonModule,
+    NgApexchartsModule
   ],
   providers: [
     // {

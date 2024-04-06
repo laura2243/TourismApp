@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { Observable, catchError, map, throwError } from 'rxjs';
 import { User } from '../data-types/user.data';
 import { Destination } from '../data-types/destination.data';
+import { Reservation } from '../data-types/reservation.data';
 
 
 
@@ -12,6 +13,7 @@ import { Destination } from '../data-types/destination.data';
 export class ReservationService {
 
   GET_RESERVATIONS_URL: string = `http://localhost:5000/reservation/get_all`;
+ 
 
 
 
@@ -35,7 +37,19 @@ export class ReservationService {
 
   getReservations(): Observable<any> {
 
-    return this.http.get<Destination[]>(this.GET_RESERVATIONS_URL).pipe(
+    return this.http.get<Reservation[]>(this.GET_RESERVATIONS_URL).pipe(
+      catchError((error: HttpErrorResponse) => {
+        if (error.status === 401) {
+          console.log("Unauthorized error");
+        }
+        return throwError(() => error)
+      }))
+  }
+
+  getReservationsByDestinationId(destination_id: any): Observable<any> {
+    const GET_RESERVATIONS_BY_DESTINATION_ID_URL = `http://localhost:5000/reservation/get_by_destination_id/${destination_id}`;
+
+    return this.http.get<Reservation[]>(GET_RESERVATIONS_BY_DESTINATION_ID_URL).pipe(
       catchError((error: HttpErrorResponse) => {
         if (error.status === 401) {
           console.log("Unauthorized error");

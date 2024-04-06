@@ -32,6 +32,7 @@ export class HomeComponent implements OnInit {
   loggedUser: boolean = false;
   currentUserName: string = '';
   filteredDestinationsDate: any[] = [];
+  buttonText!: string;
 
 
   @ViewChild('scrollToOffersTarget') scrollToOffersTarget!: ElementRef<HTMLElement>;
@@ -39,11 +40,11 @@ export class HomeComponent implements OnInit {
   @ViewChild('scrollToContactTarget') scrollToContactTarget!: ElementRef<HTMLElement>;
   @ViewChild('scrollToHomeTarget') scrollToHomeTarget!: ElementRef<HTMLElement>;
   @ViewChild('scrollToAboutUsTarget') scrollToAboutUsTarget!: ElementRef<HTMLElement>;
-  // matStartDate!: HTMLInputElement;
-  // matEndDate!: HTMLInputElement;
+
 
   startDatePicker = new Subject<MatDatepickerInputEvent<any>>();
   endDatePicker = new Subject<MatDatepickerInputEvent<any>>();
+  currentUserRole: any;
 
 
   constructor(private viewportScroller: ViewportScroller, public dialog: MatDialog, private route: ActivatedRoute,
@@ -150,6 +151,12 @@ export class HomeComponent implements OnInit {
       this.loggedUser = true;
       var currentUserObject = JSON.parse(currentUser);
       this.currentUserName = currentUserObject.user.name.toUpperCase();
+      this.currentUserRole = currentUserObject.user.role.toUpperCase();
+      if (this.currentUserRole == "CLIENT") {
+        this.buttonText = "Book Now";
+      } else {
+        this.buttonText = "View Stats";
+      }
     }
 
 
@@ -291,7 +298,7 @@ export class HomeComponent implements OnInit {
 
   // filter destinations based on the selected date range
   filterDestinationsByDateRange(startDate: any, endDate: any) {
- 
+
     if (startDate && endDate) {
       // Set time to midnight for both start and end dates
       startDate.setHours(0, 0, 0, 0);
@@ -322,6 +329,29 @@ export class HomeComponent implements OnInit {
     } else {
       this.showTextNoDateFound = false;
     }
+  }
+
+
+  goToStatsPage(destination: any) {
+    console.log(destination)
+    const destinationParam: Destination = {
+      id: destination.id,
+      title: destination.title,
+      location: destination.location,
+      price: destination.price,
+      available_spots: destination.available_spots,
+      description: destination.description,
+      discount: destination.discount,
+      image_data: destination.image_data,
+      image_name: destination.image_name,
+      start_date: destination.start_date,
+      end_date: destination.end_date
+    };
+    
+    
+  
+    this.router.navigate(['/view-reservations'], { queryParams: { destinationId: destination.id, destinationName: destination.name } });
+
   }
 
 

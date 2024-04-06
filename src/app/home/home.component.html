@@ -124,7 +124,8 @@
               </p>
               <p class="info">Available spots: {{ offerDestination.available_spots }}</p>
               <p class="info">Description: {{ offerDestination.description }}</p>
-              <button (click)="openReservationDialog(offerDestination)">Book Now</button>
+              <button
+                (click)="currentUserRole == 'CLIENT' ?   openReservationDialog(offerDestination) : goToStatsPage(offerDestination)">{{buttonText}}</button>
             </div>
 
 
@@ -189,7 +190,8 @@
 
 
               <i *ngIf="isUserAdmin()" class="material-icons delete-icon" (click)="open(destination)">delete</i>
-              <button (click)="openReservationDialog(destination)">Book Now</button>
+              <button
+                (click)="currentUserRole == 'CLIENT' ?   openReservationDialog(destination) : goToStatsPage(destination)">{{buttonText}}</button>
               <i *ngIf="isUserAdmin()" class="material-icons edit-icon"
                 (click)="openDialogUpdate('update',destination)">edit</i>
 
