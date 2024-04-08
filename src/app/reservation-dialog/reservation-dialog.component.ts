@@ -1,4 +1,4 @@
-import { Component, Inject, OnInit } from '@angular/core';
+import { Component, HostListener, Inject, OnInit } from '@angular/core';
 import { AbstractControl, FormBuilder, FormControl, FormGroup, ValidatorFn, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { Destination } from '../data-types/destination.data';
@@ -33,6 +33,11 @@ import { ReservationService } from '../services/reservation.service';
 })
 export class ReservationDialogComponent {
 
+
+  @HostListener('input', ['$event'])
+  onInput(event: KeyboardEvent) {
+    event.preventDefault();
+  }
   refreshEvent: EventEmitter<void> = new EventEmitter<void>();
 
   title: string = '';
@@ -77,6 +82,7 @@ export class ReservationDialogComponent {
       if (data.start.value && data.end.value) {
         this.startDate = data.start.value
         this.endDate = data.end.value
+        this.calculatePrice();
         this.filterDestinationsByDateRange(data.start.value, data.end.value);
       }
     });
@@ -104,20 +110,12 @@ export class ReservationDialogComponent {
 
     // Subscribe to changes in the selected_spot control
     this.makeReservationForm.get('selected_spots')?.valueChanges.subscribe((selectedSpot: number) => {
-      if (selectedSpot !== null && !isNaN(selectedSpot)) {
-        
-        if (this.data.destination?.discount != 0) {
-
-          var priceWithDiscount = this.data.destination?.price - (this.data.destination?.price * this.data.destination?.discount / 100)
-      
-          this.total_price = (priceWithDiscount || 0) * selectedSpot;
-        } else {
-          this.total_price = (this.data.destination?.price || 0) * selectedSpot;
-        }
-
-        this.makeReservationForm.patchValue({ price: this.total_price });
-      }
+      this.calculatePrice();
     });
+
+
+ 
+  
 
     const byteCharacters = atob(destination.image_data);
     const byteNumbers = new Array(byteCharacters.length);
@@ -133,10 +131,36 @@ export class ReservationDialogComponent {
     this.imageSelected = true;
     this.showImg = URL.createObjectURL(this.coverImgFile);
 
-  
+
     this.coverImgFileName = destination.image_name!
   }
 
+
+  calculatePrice() {
+    var selectedSpot = this.makeReservationForm.get('selected_spots')?.value
+    console.log(selectedSpot)
+    if (selectedSpot && selectedSpot !== null && !isNaN(selectedSpot) && this.endDate  && this.startDate) {
+
+      if (this.data.destination?.discount != 0) {
+
+        var priceWithDiscount = this.data.destination?.price - (this.data.destination?.price * this.data.destination?.discount / 100)
+        const nr_of_days = (this.endDate - this.startDate) / (1000 * 3600 * 24);
+        var priceWithNights = priceWithDiscount * nr_of_days
+       
+
+        this.total_price = (priceWithNights || 0) * selectedSpot;
+      } else {
+
+        const nr_of_days = (this.endDate - this.startDate) / (1000 * 3600 * 24);
+
+
+        var priceWithNights = this.data.destination?.price * nr_of_days
+        this.total_price = (priceWithNights || 0) * selectedSpot;
+      }
+
+      this.makeReservationForm.patchValue({ price: this.total_price });
+    }
+  }
 
 
 
@@ -235,6 +259,8 @@ export class ReservationDialogComponent {
 
       this.validDate = !(destinationStartDate.getTime() <= startDate.getTime() &&
         destinationEndDate.getTime() >= endDate.getTime());
+
+        
     }
 
   }
@@ -244,8 +270,8 @@ export class ReservationDialogComponent {
 
   onSubmit() {
 
-   
-    
+
+
 
     var currentUser = sessionStorage.getItem('currentUser');
     var currentUserId;
@@ -273,6 +299,19 @@ export class ReservationDialogComponent {
           duration: 5000,
         });
 
+
+        this.destinationService.consumeSpots(this.data.destination.id, this.makeReservationForm.get('selected_spots')?.value).subscribe({
+          next: () => {
+
+          }, error: () => {
+
+            this.notif.showPopupMessage("Couldn't add reservation!", "OK")
+            this.dialogRef.close();
+            console.debug;
+          }
+        }
+        );
+
         this.dialogRef.close();
         this.refreshEvent.emit();
 
@@ -289,7 +328,7 @@ export class ReservationDialogComponent {
 
     );
 
-  
+
 
   }
 

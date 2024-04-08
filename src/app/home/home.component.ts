@@ -121,6 +121,24 @@ export class HomeComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe(result => {
       console.log('The dialog was closed', result);
+      this.destinationService.getDestinations().subscribe(
+        {
+          next: (data: Destination[]) => {
+
+            console.log("daaa")
+            this.destinations = [...data]
+            this.offerDestinations = this.destinations.filter(destination => destination.discount! > 0);
+
+            console.log(this.destinations)
+          }
+        }
+      )
+
+      var container = document.getElementById("card-container");
+      var content = container?.innerHTML;
+      container?.innerHTML != content;
+
+    
 
       //make reservation service call to save reservation
 
@@ -169,7 +187,7 @@ export class HomeComponent implements OnInit {
           this.destinations = [...data]
           this.offerDestinations = this.destinations.filter(destination => destination.discount! > 0);
 
-          console.log(this.destinations)
+
         }
       }
     )
@@ -347,10 +365,15 @@ export class HomeComponent implements OnInit {
       start_date: destination.start_date,
       end_date: destination.end_date
     };
-    
-    
-  
-    this.router.navigate(['/view-reservations'], { queryParams: { destinationId: destination.id, destinationName: destination.name } });
+
+
+
+    this.router.navigate(['/view-reservations'], {
+      queryParams: {
+        destinationId: destination.id, destinationName: destination.name,
+        destinationStartDateString: destination.start_date, destinationEndDateString: destination.end_date
+      }
+    });
 
   }
 

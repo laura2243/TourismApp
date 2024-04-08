@@ -9,6 +9,7 @@ import { NgForOf, NgIf, TitleCasePipe } from '@angular/common';
 import { CommonModule } from '@angular/common';
 import { ReservationService } from '../services/reservation.service';
 import { MatFormField, MatLabel } from '@angular/material/form-field';
+import {Location} from '@angular/common';
 import { MatDateRangeInput, MatDateRangePicker, MatDatepicker, MatDatepickerToggle } from '@angular/material/datepicker';
 import {
   ChartComponent,
@@ -48,7 +49,8 @@ export type ChartOptions = {
     MatDateRangeInput,
     MatDateRangePicker,
     MatDatepickerToggle,
-    NgApexchartsModule
+    NgApexchartsModule,
+  
   ],
   templateUrl: './view-reservations.component.html',
   styleUrl: './view-reservations.component.css',
@@ -63,12 +65,31 @@ export class ViewReservationsComponent implements OnInit {
   reservations: Reservation[] = [];
   destinationId!: string;
   destinationName!: string;
+  destinationStartDateString!: string;
+  destinationEndDateString!: string;
+  reservationsByMonth: { [month: string]: number[] } = {
+    'January': [],
+    'February': [],
+    'March': [],
+    'April': [],
+    'May': [],
+    'June': [],
+    'July': [],
+    'August': [],
+    'September': [],
+    'October': [],
+    'November': [],
+    'December': []
+  };
+  frequencyVector: { [month: string]: number } = {};
+  monthKeys: string[] = [];
+  reservationCounts: number[] = [];
 
   @ViewChild("chart") chart!: ChartComponent;
   public chartOptions!: Partial<ChartOptions>;
 
   constructor(private loginService: LoginService, private router: Router, private cookieService: CookieService,
-    public titlecase: TitleCasePipe, public reservationService: ReservationService, private route: ActivatedRoute) {
+    public titlecase: TitleCasePipe, public reservationService: ReservationService, private route: ActivatedRoute,private _location: Location) {
 
 
 
@@ -91,6 +112,10 @@ export class ViewReservationsComponent implements OnInit {
         next: (data: Reservation[]) => {
 
           this.reservations = [...data]
+          this.populateReservationsByMonth();
+          this.getNumberOfReservationsByMonth();
+
+
 
           this.renderCalendarComponent();
           this.renderStatisticsComponent();
@@ -100,6 +125,152 @@ export class ViewReservationsComponent implements OnInit {
       });
 
 
+  }
+
+
+  getNumberOfReservationsByMonth() {
+    for (const reservation of this.reservations) {
+      const startDateString: string | undefined = reservation.start_date;
+      const endDateString: string | undefined = reservation.end_date;
+
+      if (!startDateString || !endDateString) {
+        continue;
+      }
+
+      const startDate: Date = new Date(startDateString);
+      const endDate: Date = new Date(endDateString);
+
+      let currentDate: Date = new Date(startDate); // Initialize currentDate with startDate
+      let destinationStartDate = new Date(this.destinationStartDateString)
+      let destinationEndDate = new Date(this.destinationEndDateString)
+
+
+      // Keep track of reservations that have been counted for each month
+      const countedReservations: Set<string> = new Set();
+
+      while (currentDate <= endDate) {
+
+        const monthYearKey = `${currentDate.getMonth() + 1}`;
+
+        if (!countedReservations.has(monthYearKey)) {
+
+          // Increment count for the month in the frequency vector
+          if (this.frequencyVector[monthYearKey]) {
+            this.frequencyVector[monthYearKey]++;
+          } else {
+            this.frequencyVector[monthYearKey] = 1;
+          }
+          // Mark this reservation as counted for this month
+          countedReservations.add(monthYearKey);
+        }
+        // Move to the next day
+        currentDate.setDate(currentDate.getDate() + 1);
+      }
+    }
+
+
+
+
+
+
+    //get the last month introduced in the vector
+    const monthKeysNumbers: string[] = Object.keys(this.frequencyVector);
+    monthKeysNumbers.sort();
+    const lastMonthKey: string | undefined = monthKeysNumbers[monthKeysNumbers.length - 1];
+    const lastMonth: number | undefined = lastMonthKey ? +lastMonthKey : undefined;
+
+
+    // Fill the frequency vector with zeros for the months from lastMonth to December
+    if (lastMonth !== undefined) {
+
+      for (let month = lastMonth + 1; month <= 12; month++) {
+        const monthKey = `${month}`;
+        this.frequencyVector[monthKey] = 0;
+      }
+    }
+
+    console.log(this.frequencyVector);
+
+    //add  missing months
+
+
+
+    // Get the keys (months) from the frequencyVector
+    const monthKeys = Object.keys(this.frequencyVector).map(Number);
+    // Sort the keys in ascending order
+    monthKeys.sort((a, b) => a - b);
+
+    // Iterate over the keys and add missing months with value 0
+    for (let i = 0; i < monthKeys.length - 1; i++) {
+      const currentMonth = monthKeys[i];
+      const nextMonth = monthKeys[i + 1];
+      if (nextMonth - currentMonth > 1) {
+        // Add missing months between currentMonth and nextMonth
+        for (let j = currentMonth + 1; j < nextMonth; j++) {
+          this.frequencyVector[j.toString()] = 0;
+        }
+      }
+    }
+
+    // Sort the keys again after adding missing months
+    monthKeys.sort((a, b) => a - b);
+
+    // Ensure the frequencyVector has consecutive months starting from the smallest key
+    for (let i = monthKeys[0]; i <= monthKeys[monthKeys.length - 1]; i++) {
+      if (!this.frequencyVector.hasOwnProperty(i.toString())) {
+        // Add missing months with value 0
+        this.frequencyVector[i.toString()] = 0;
+      }
+    }
+    //
+
+
+    this.monthKeys = Object.keys(this.frequencyVector).map(key => {
+      const month = +key;
+      const monthName = new Date(2000, month - 1, 1).toLocaleString('en-US', { month: 'long' });
+      return `${monthName}`;
+    });
+
+    this.reservationCounts = Object.values(this.frequencyVector);
+
+
+
+
+
+
+  }
+
+  private populateReservationsByMonth() {
+
+
+    for (const reservation of this.reservations) {
+      const startDateString: string | undefined = reservation.start_date;
+      const endDateString: string | undefined = reservation.end_date;
+
+
+      if (!startDateString || !endDateString) {
+        continue;
+      }
+
+      const startDate: Date = new Date(startDateString);
+      const endDate: Date = new Date(endDateString);
+
+      let currentDate: Date = new Date(startDate); // Initialize currentDate with startDate
+
+      while (currentDate <= endDate) {
+
+        const monthName = currentDate.toLocaleString('en-US', { month: 'long' });
+
+        if (!this.reservationsByMonth[monthName]) {
+          this.reservationsByMonth[monthName] = [];
+        }
+        this.reservationsByMonth[monthName].push(currentDate.getDate());
+
+        // Move to the next day
+        currentDate.setDate(currentDate.getDate() + 1);
+
+      }
+    }
   }
 
 
@@ -127,8 +298,8 @@ export class ViewReservationsComponent implements OnInit {
 
       series: [
         {
-          name: "Reservation",
-          data: [31, 40, 28, 51, 42, 109, 100],
+          name: "Reservations",
+          data: this.reservationCounts,
 
 
         }
@@ -146,8 +317,7 @@ export class ViewReservationsComponent implements OnInit {
       },
       xaxis: {
         type: "category",
-        categories: ["January", "February", "March", "April", "May", "June", "July",
-          "August", "September", "October", "November", "December"]
+        categories: this.monthKeys
       },
 
 
@@ -198,46 +368,13 @@ export class ViewReservationsComponent implements OnInit {
 
 
 
-
       for (let i = firstDayofMonth; i > 0; i--) { // creating li of previous month last days
-
         liTag += `<li class="inactive">${lastDateofLastMonth - i + 1}</li>`;
-
       }
 
-      const daysSet: { [key: number]: number } = {}
-
-
-      this.reservations.forEach(reservation => {
-        const startDateString = reservation.start_date;
-        const endDateString = reservation.end_date;
-
-        if (startDateString && endDateString) {
-          const startDate = new Date(startDateString);
-          const endDate = new Date(endDateString);
-
-          const startMonth = startDate.getMonth();
-          const endMonth = endDate.getMonth();
-
-
-          for (let date = new Date(startDate); date <= endDate; date.setDate(date.getDate() + 1)) {
-            if (currMonth === startMonth || currMonth === endMonth) {
-
-
-
-              daysSet.add(date.getDate());
-              liTag += `<li _ngcontent-ng-c3958097677 class="active">${date.getDate()}</li>`;
-            }
-          }
-        }
-      });
-
-
       for (let i = 1; i <= lastDateofMonth; i++) { // creating li of all days of current month
-        // adding active class to li if the current day, month, and year matched
-        const daysArray = Array.from(daysSet);
-        console.log(daysArray)
-        if (daysArray.includes(i) && (currMonth === startMonth || currMonth === endMonth)) {
+
+        if (this.reservationsByMonth[months[currMonth]].includes(i)) {
           liTag += `<li _ngcontent-ng-c3958097677 class="active">${i}</li>`
         } else {
           liTag += `<li _ngcontent-ng-c3958097677 >${i}</li>`
@@ -274,6 +411,10 @@ export class ViewReservationsComponent implements OnInit {
       });
     });
 
+  }
+
+  backClicked() {
+    this._location.back();
   }
 
 

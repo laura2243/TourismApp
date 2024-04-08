@@ -75,10 +75,22 @@ export class DestinationService {
   }
 
 
-  getDestinationById(id: any): Observable<any> {
+  // getDestinationById(id: any): Observable<any> {
 
-    const GET_DEVICE_BY_ID_URL = `http://localhost:8089/device/get-destination-by-id/${id}`;
-    return this.http.get<User>(GET_DEVICE_BY_ID_URL).pipe(
+  //   const GET_DEVICE_BY_ID_URL = `http://localhost:8089/device/get-destination-by-id/${id}`;
+  //   return this.http.get<User>(GET_DEVICE_BY_ID_URL).pipe(
+  //     catchError((error: HttpErrorResponse) => {
+  //       if (error.status === 401) {
+  //         console.log("Unauthorized error");
+  //       }
+  //       return throwError(() => error)
+  //     }))
+  // }
+
+  consumeSpots(destination_id: any, nr_spots: any): Observable<any> {
+
+    const CONSUME_SPOTS_URL = `http://localhost:5000/destination/consume_spots/${destination_id}/${nr_spots}`;
+    return this.http.post<Destination>(CONSUME_SPOTS_URL,{}).pipe(
       catchError((error: HttpErrorResponse) => {
         if (error.status === 401) {
           console.log("Unauthorized error");

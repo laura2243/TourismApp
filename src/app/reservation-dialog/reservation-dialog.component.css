@@ -402,3 +402,11 @@ img {
 ::ng-deep .mdc-text-field--filled.mdc-text-field--disabled .mdc-floating-label{
     color: rgba(255, 255, 255, 0.7) !important
 }
+
+input[matStartDate], input[matEndDate] {
+    pointer-events: none;
+  }
+
+  mat-mdc-form-field-infix ng-tns-c2608167813-3{
+    pointer-events: none;
+  }

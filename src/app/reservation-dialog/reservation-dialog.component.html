@@ -33,8 +33,8 @@
                 <mat-form-field class="datePicker" appearance="outline">
                     <mat-label>Enter a date range</mat-label>
                     <mat-date-range-input [rangePicker]="picker">
-                        <input matStartDate placeholder="MM/DD/YYYY " (dateChange)="startDatePicker.next($event)">
-                        <input matEndDate placeholder="MM/DD/YYYY" (dateChange)="endDatePicker.next($event)">
+                        <input matStartDate placeholder="MM/DD/YYYY " readonlyInput (dateChange)="startDatePicker.next($event)" [matDatepicker]="picker" readonly preventInput>
+                        <input matEndDate placeholder="MM/DD/YYYY" readonlyInput (dateChange)="endDatePicker.next($event)" [matDatepicker]="picker" readonly preventInput>
                     </mat-date-range-input>
                     <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
                     <mat-date-range-picker #picker></mat-date-range-picker>

@@ -3,22 +3,10 @@
         <nav>
             <h2 class="logo">T||A</h2>
             <ul>
-                <!-- <li><a (click)="scrollToHome()">HOME</a></li>
-        <li><a (click)="scrollToAboutUs()">ABOUT</a></li>
-        <li><a (click)="scrollToAllDestinations()">BOOKINGS</a>
-          <ul>
-            <li>
-              <a (click)="scrollToOffers()">OFFERS</a>
-            </li>
-          </ul>
-        </li>
-        <li><a (click)="scrollToContact()">CONTACT</a></li> -->
-                <li><a>SIGN IN</a>
-                    <ul>
-                        <li>
-                            <a href="register">SIGN UP</a>
-                        </li>
-                    </ul>
+                <li><a (click)="backClicked()"><span class="material-symbols-outlined">
+                            close
+                        </span></a>
+
                 </li>
             </ul>
         </nav>
@@ -31,7 +19,7 @@
 
         <div class="content">
 
-            <div id="tableDiv" >
+            <div id="tableDiv">
 
                 <table id="table">
                     <tr class="headerTable">
@@ -83,8 +71,7 @@
 
 
                 <div id="chart">
-                    <apx-chart 
-                        [colors]="chartOptions.colors  ? chartOptions.colors : []"
+                    <apx-chart [colors]="chartOptions.colors  ? chartOptions.colors : []"
                         [fill]="chartOptions.fill  ? chartOptions.fill : {}"
                         [series]="chartOptions.series ? chartOptions.series : []"
                         [chart]="chartOptions.chart ? chartOptions.chart : { type: 'line' }"

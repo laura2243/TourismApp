@@ -972,3 +972,8 @@ ul li:hover>.submenu {
   border-bottom: 2px solid white !important;
   border-radius: 10px !important;
 }
+
+
+.no-spots{
+  display: none;
+}

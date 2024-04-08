@@ -109,7 +109,8 @@
 
         <div class="card-container-wrapper">
           <div class="card-container">
-            <div class="card" *ngFor="let offerDestination of offerDestinations">
+            <div class="card" *ngFor="let offerDestination of offerDestinations"
+              [ngClass]="{'no-spots': offerDestination.available_spots == 0 && currentUserRole == 'CLIENT'}">
               <img [src]="'data:image/jpeg;base64,'+offerDestination.image_data" alt="Destination Image">
 
 
@@ -167,7 +168,9 @@
 
 
 
-            <div class="card" *ngFor="let destination of (searchedDestination ? filteredDestinations : destinations)">
+            <div class="card" *ngFor="let destination of (searchedDestination ? filteredDestinations : destinations)"
+              [ngClass]="{'no-spots': destination.available_spots == 0 && currentUserRole == 'CLIENT'}">
+
 
               <img [src]="'data:image/jpeg;base64,'+destination.image_data" alt="Destination Image">
               <span *ngIf="destination.discount !== 0" class="sale">-{{destination.discount}}%</span>
@@ -194,6 +197,7 @@
                 (click)="currentUserRole == 'CLIENT' ?   openReservationDialog(destination) : goToStatsPage(destination)">{{buttonText}}</button>
               <i *ngIf="isUserAdmin()" class="material-icons edit-icon"
                 (click)="openDialogUpdate('update',destination)">edit</i>
+
 
 
             </div>
