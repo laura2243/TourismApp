@@ -4,9 +4,7 @@ import { LoginService } from '../services/login.service';
 import { Router } from '@angular/router';
 import { User } from '../data-types/user.data';
 import { CookieService } from 'ngx-cookie-service';
-// import { JwtServiceService } from '../services/jwt-service.service';
-// import { HttpService } from '../services/http.service';
-
+import {Location} from '@angular/common';
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
@@ -18,9 +16,10 @@ export class LoginComponent implements OnInit {
   email !: String;
   password !: String;
   userFound: boolean = true;
+  hiddenPwd: boolean = true;
 
   constructor(private loginService: LoginService, private router: Router, private cookieService: CookieService,
-    // private jwtService: JwtServiceService, private httpService: HttpService
+    private _location: Location
   ) { }
 
   ngOnInit() {
@@ -111,5 +110,10 @@ export class LoginComponent implements OnInit {
     );
 
   }
+
+  backClicked() {
+    this._location.back();
+  }
+
 }
 

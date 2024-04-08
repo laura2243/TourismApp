@@ -14,6 +14,7 @@ import { ReservationDialogComponent } from '../reservation-dialog/reservation-di
 import { MatDatepickerInputEvent } from '@angular/material/datepicker';
 
 
+
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
@@ -30,9 +31,16 @@ export class HomeComponent implements OnInit {
   offerDestinations: Destination[] = [];
   loginForm: any;
   loggedUser: boolean = false;
-  currentUserName: string = '';
+  currentUserName!: string ;
   filteredDestinationsDate: any[] = [];
   buttonText!: string;
+  @ViewChild('cardContainer', { static: true }) cardContainer!: ElementRef;
+
+  refreshContent() {
+    
+    const container = this.cardContainer.nativeElement as HTMLElement;
+    container.innerHTML = 'New content';
+  }
 
 
   @ViewChild('scrollToOffersTarget') scrollToOffersTarget!: ElementRef<HTMLElement>;
@@ -121,6 +129,9 @@ export class HomeComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe(result => {
       console.log('The dialog was closed', result);
+      // var container = document.getElementById("card-container");
+      // var content = container?.innerHTML;
+      // container?.innerHTML != content;
       this.destinationService.getDestinations().subscribe(
         {
           next: (data: Destination[]) => {
@@ -130,19 +141,20 @@ export class HomeComponent implements OnInit {
             this.offerDestinations = this.destinations.filter(destination => destination.discount! > 0);
 
             console.log(this.destinations)
+         
           }
         }
       )
-
-      var container = document.getElementById("card-container");
-      var content = container?.innerHTML;
-      container?.innerHTML != content;
-
-    
-
-      //make reservation service call to save reservation
-
     });
+
+    var container = document.getElementById("card-container");
+    var content = container?.innerHTML;
+    container?.innerHTML != content;
+
+
+    var container = document.getElementById("card-container-offers");
+    var content = container?.innerHTML;
+    container?.innerHTML != content;
   }
 
 
@@ -163,6 +175,7 @@ export class HomeComponent implements OnInit {
       }
     });
 
+    console.log(this.currentUserName)
     var currentUser = sessionStorage.getItem('currentUser');
     if (currentUser) {
 

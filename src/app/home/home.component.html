@@ -40,7 +40,7 @@
             </li>
           </ul>
         </li>
-        <li><a (click)="logOut()">LOG OUT</a></li>
+        <li *ngIf="currentUserRole == 'CLIENT' || currentUserRole == 'ADMIN' "><a  (click)="logOut()">LOG OUT</a></li>
 
       </ul>
     </nav>
@@ -108,7 +108,7 @@
       </mat-form-field> -->
 
         <div class="card-container-wrapper">
-          <div class="card-container">
+          <div id="card-container-offers" class="card-container">
             <div class="card" *ngFor="let offerDestination of offerDestinations"
               [ngClass]="{'no-spots': offerDestination.available_spots == 0 && currentUserRole == 'CLIENT'}">
               <img [src]="'data:image/jpeg;base64,'+offerDestination.image_data" alt="Destination Image">
@@ -125,7 +125,7 @@
               </p>
               <p class="info">Available spots: {{ offerDestination.available_spots }}</p>
               <p class="info">Description: {{ offerDestination.description }}</p>
-              <button
+              <button *ngIf="currentUserRole == 'CLIENT' || currentUserRole == 'ADMIN' "
                 (click)="currentUserRole == 'CLIENT' ?   openReservationDialog(offerDestination) : goToStatsPage(offerDestination)">{{buttonText}}</button>
             </div>
 
@@ -164,7 +164,7 @@
 
 
         <div class="card-container-wrapper">
-          <div class="card-container">
+          <div  id="card-container" class="card-container">
 
 
 
@@ -193,7 +193,7 @@
 
 
               <i *ngIf="isUserAdmin()" class="material-icons delete-icon" (click)="open(destination)">delete</i>
-              <button
+              <button *ngIf="currentUserRole == 'CLIENT' || currentUserRole == 'ADMIN' "
                 (click)="currentUserRole == 'CLIENT' ?   openReservationDialog(destination) : goToStatsPage(destination)">{{buttonText}}</button>
               <i *ngIf="isUserAdmin()" class="material-icons edit-icon"
                 (click)="openDialogUpdate('update',destination)">edit</i>
